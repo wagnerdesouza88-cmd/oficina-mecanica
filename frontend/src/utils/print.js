@@ -179,9 +179,9 @@ export function imprimirOS(ordem, config = {}) {
   const secondary = config.corSecundaria || '#f97316'
   const osNum = ordem.id.slice(-6).toUpperCase()
   const subtotalServicos = (ordem.itens ?? []).reduce((a, i) => a + Number(i.preco), 0)
-  const subtotalPecas = (ordem.pecas ?? []).reduce((a, p) => a + Number(p.subtotal), 0)
+  const subtotalProdutos = (ordem.pecas ?? []).reduce((a, p) => a + Number(p.subtotal), 0)
   const total = Number(ordem.total)
-  const desconto = subtotalServicos + subtotalPecas - total
+  const desconto = subtotalServicos + subtotalProdutos - total
 
   const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -257,17 +257,17 @@ export function imprimirOS(ordem, config = {}) {
           <td class="text-right">${brl(i.preco)}</td>
         </tr>`).join('')}
         <tr>
-          <td style="font-weight:700;text-align:right;color:#555">Subtotal Mão de Obra</td>
+          <td style="font-weight:700;text-align:right;color:#555">Subtotal Serviços</td>
           <td class="text-right" style="font-weight:700">${brl(subtotalServicos)}</td>
         </tr>
       </tbody>
     </table>
   </div>` : ''}
 
-  <!-- Peças -->
+  <!-- Produtos Vendidos -->
   ${(ordem.pecas ?? []).length > 0 ? `
   <div class="section">
-    <span class="section-title">Peças Utilizadas</span>
+    <span class="section-title">Produtos Vendidos</span>
     <table>
       <thead>
         <tr>
@@ -288,8 +288,8 @@ export function imprimirOS(ordem, config = {}) {
           <td class="text-right">${brl(p.subtotal)}</td>
         </tr>`).join('')}
         <tr>
-          <td colspan="4" style="font-weight:700;text-align:right;color:#555">Subtotal Peças</td>
-          <td class="text-right" style="font-weight:700">${brl(subtotalPecas)}</td>
+          <td colspan="4" style="font-weight:700;text-align:right;color:#555">Subtotal Produtos</td>
+          <td class="text-right" style="font-weight:700">${brl(subtotalProdutos)}</td>
         </tr>
       </tbody>
     </table>
@@ -305,8 +305,8 @@ export function imprimirOS(ordem, config = {}) {
   <div class="section">
     <span class="section-title">Resumo Financeiro</span>
     <div class="totals-box">
-      ${subtotalServicos > 0 ? `<div class="total-row"><span class="total-label">Subtotal Mão de Obra</span><span class="total-value">${brl(subtotalServicos)}</span></div>` : ''}
-      ${subtotalPecas > 0 ? `<div class="total-row"><span class="total-label">Subtotal Peças</span><span class="total-value">${brl(subtotalPecas)}</span></div>` : ''}
+      ${subtotalServicos > 0 ? `<div class="total-row"><span class="total-label">Subtotal Serviços</span><span class="total-value">${brl(subtotalServicos)}</span></div>` : ''}
+      ${subtotalProdutos > 0 ? `<div class="total-row"><span class="total-label">Subtotal Produtos</span><span class="total-value">${brl(subtotalProdutos)}</span></div>` : ''}
       ${desconto > 0.01 ? `<div class="total-row"><span class="total-label" style="color:#e53935">Desconto</span><span class="total-value" style="color:#e53935">-${brl(desconto)}</span></div>` : ''}
       ${ordem.pagamento ? `<div class="total-row"><span class="total-label">Forma de Pagamento</span><span class="total-value">${FORMA_LABEL[ordem.pagamento.formaPagamento] || '—'}${ordem.pagamento.parcelas > 1 ? ` (${ordem.pagamento.parcelas}x de ${brl(ordem.pagamento.valorParcela)})` : ''}</span></div>` : ''}
       <div class="total-row total-final"><span class="total-label">TOTAL GERAL</span><span class="total-value">${brl(total)}</span></div>
@@ -344,7 +344,7 @@ export function imprimirRecibo(ordem, config = {}) {
   if (!pag) return
   const reciboNum = `REC-${new Date().getFullYear()}-${pag.id.slice(-6).toUpperCase()}`
   const subtotalServicos = (ordem.itens ?? []).reduce((a, i) => a + Number(i.preco), 0)
-  const subtotalPecas = (ordem.pecas ?? []).reduce((a, p) => a + Number(p.subtotal), 0)
+  const subtotalProdutos = (ordem.pecas ?? []).reduce((a, p) => a + Number(p.subtotal), 0)
   const total = Number(pag.valor)
 
   const html = `<!DOCTYPE html>
@@ -407,7 +407,7 @@ export function imprimirRecibo(ordem, config = {}) {
 
   ${(ordem.pecas ?? []).length > 0 ? `
   <div class="section">
-    <span class="section-title">Peças</span>
+    <span class="section-title">Produtos Vendidos</span>
     <table>
       <thead><tr><th>Descrição</th><th class="text-center" style="width:80px">Qtd.</th><th class="text-right" style="width:110px">Subtotal</th></tr></thead>
       <tbody>
@@ -418,8 +418,8 @@ export function imprimirRecibo(ordem, config = {}) {
 
   <!-- Total -->
   <div class="totals-box" style="margin-top:10px">
-    ${subtotalServicos > 0 ? `<div class="total-row"><span class="total-label">Subtotal Mão de Obra</span><span class="total-value">${brl(subtotalServicos)}</span></div>` : ''}
-    ${subtotalPecas > 0 ? `<div class="total-row"><span class="total-label">Subtotal Peças</span><span class="total-value">${brl(subtotalPecas)}</span></div>` : ''}
+    ${subtotalServicos > 0 ? `<div class="total-row"><span class="total-label">Subtotal Serviços</span><span class="total-value">${brl(subtotalServicos)}</span></div>` : ''}
+    ${subtotalProdutos > 0 ? `<div class="total-row"><span class="total-label">Subtotal Produtos</span><span class="total-value">${brl(subtotalProdutos)}</span></div>` : ''}
     <div class="total-row total-final"><span class="total-label">TOTAL PAGO</span><span class="total-value">${brl(total)}</span></div>
   </div>
 

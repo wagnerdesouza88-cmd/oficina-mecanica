@@ -60,13 +60,16 @@ model TipoServico {
 }
 
 model ItemOrdemServico {
-  id            String       @id @default(cuid())
-  ordemId       String
-  tipoServicoId String?
-  nome          String
-  preco         Decimal      @db.Decimal(10, 2)
-  ordem         OrdemServico @relation(fields: [ordemId], references: [id], onDelete: Cascade)
-  tipoServico   TipoServico? @relation(fields: [tipoServicoId], references: [id], onDelete: SetNull)
+  id             String             @id @default(cuid())
+  ordemId        String
+  tipoServicoId  String?
+  nome           String
+  preco          Decimal            @db.Decimal(10, 2)
+  custoPecas     Decimal            @default(0) @db.Decimal(10, 2)
+  valorMaoDeObra Decimal            @default(0) @db.Decimal(10, 2)
+  ordem          OrdemServico       @relation(fields: [ordemId], references: [id], onDelete: Cascade)
+  tipoServico    TipoServico?       @relation(fields: [tipoServicoId], references: [id], onDelete: SetNull)
+  pecas          PecaOrdemServico[]
 }
 
 model Pagamento {
@@ -129,14 +132,23 @@ model MovimentacaoEstoque {
 }
 
 model PecaOrdemServico {
-  id             String       @id @default(cuid())
-  ordemServicoId String
-  produtoId      String
-  quantidade     Decimal      @db.Decimal(10, 3)
-  precoUnitario  Decimal      @db.Decimal(10, 2)
-  subtotal       Decimal      @db.Decimal(10, 2)
-  ordem          OrdemServico @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
-  produto        Produto      @relation(fields: [produtoId], references: [id])
+  id                 String            @id @default(cuid())
+  ordemServicoId     String
+  produtoId          String
+  quantidade         Decimal           @db.Decimal(10, 3)
+  precoUnitario      Decimal           @db.Decimal(10, 2)
+  precoCompra        Decimal           @default(0) @db.Decimal(10, 2)
+  subtotal           Decimal           @db.Decimal(10, 2)
+  tipo               TipoPecaOS        @default(VENDA_DIRETA)
+  itemOrdemServicoId String?
+  ordem              OrdemServico      @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
+  produto            Produto           @relation(fields: [produtoId], references: [id])
+  itemOrdemServico   ItemOrdemServico? @relation(fields: [itemOrdemServicoId], references: [id], onDelete: SetNull)
+}
+
+enum TipoPecaOS {
+  CUSTO_SERVICO
+  VENDA_DIRETA
 }
 
 enum Status {
