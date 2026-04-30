@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables (default theme) ─────────────────────────── */
+:root {
+  --color-primary: #1e3a5f;
+  --color-primary-dark: #142840;
+  --color-primary-light: rgba(30, 58, 95, 0.08);
+  --color-secondary: #f97316;
+  --color-secondary-dark: #ea6c0a;
+  --color-secondary-light: rgba(249, 115, 22, 0.1);
+  --sidebar-top: var(--color-primary);
+  --sidebar-bottom: var(--color-primary-dark);
+}
+
+/* ── Base styles ────────────────────────────────────────────── */
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400; }
+}
+
+/* ── Utility classes using CSS vars ────────────────────────── */
+@layer utilities {
+  .bg-primary       { background-color: var(--color-primary) !important; }
+  .bg-primary-dark  { background-color: var(--color-primary-dark) !important; }
+  .bg-primary-light { background-color: var(--color-primary-light) !important; }
+  .bg-secondary     { background-color: var(--color-secondary) !important; }
+  .text-primary     { color: var(--color-primary) !important; }
+  .text-secondary   { color: var(--color-secondary) !important; }
+  .border-primary   { border-color: var(--color-primary) !important; }
+  .ring-primary     { --tw-ring-color: var(--color-primary) !important; }
+
+  /* Hover variants */
+  .hover\:bg-primary:hover      { background-color: var(--color-primary) !important; }
+  .hover\:bg-primary-dark:hover { background-color: var(--color-primary-dark) !important; }
+  .hover\:bg-secondary:hover    { background-color: var(--color-secondary) !important; }
+  .hover\:text-primary:hover    { color: var(--color-primary) !important; }
+  .hover\:text-secondary:hover  { color: var(--color-secondary) !important; }
+
+  /* Override hardcoded colors so the theme applies everywhere */
+  .bg-\[\#1e3a5f\]  { background-color: var(--color-primary) !important; }
+  .bg-\[\#162d4a\]  { background-color: var(--color-primary-dark) !important; }
+  .bg-\[\#142840\]  { background-color: var(--color-primary-dark) !important; }
+  .text-\[\#1e3a5f\] { color: var(--color-primary) !important; }
+  .border-\[\#1e3a5f\] { border-color: var(--color-primary) !important; }
+  .ring-\[\#1e3a5f\]  { --tw-ring-color: var(--color-primary) !important; }
+}
+
+/* ── Card component ────────────────────────────────────────── */
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl border border-gray-100 shadow-card transition-shadow duration-200;
+  }
+  .card:hover {
+    @apply shadow-card-hover;
+  }
+  .card-header {
+    @apply px-6 py-4 border-b border-gray-100 flex items-center justify-between;
+  }
+
+  /* Button primary */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-150;
+    background-color: var(--color-primary);
+  }
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    @apply shadow-btn-primary -translate-y-px;
+  }
+  .btn-primary:active { @apply translate-y-0; }
+
+  /* Button secondary */
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-150;
+    background-color: var(--color-secondary);
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-secondary-dark);
+    @apply shadow-btn-secondary -translate-y-px;
+  }
+
+  /* Metric card */
+  .metric-value {
+    @apply font-heading text-3xl font-bold tracking-tight;
+  }
+
+  /* Table zebra rows */
+  .table-zebra tbody tr:nth-child(even) {
+    @apply bg-gray-50/60;
+  }
+  .table-zebra tbody tr:hover {
+    @apply bg-blue-50/40;
+  }
+
+  /* Input with focus ring */
+  .input-base {
+    @apply w-full px-3 py-2.5 text-sm border border-gray-200 rounded-xl bg-white transition-all duration-150;
+    @apply focus:outline-none focus:border-primary focus:ring-2;
+    --tw-ring-color: var(--color-primary);
+    --tw-ring-opacity: 0.15;
+  }
+
+  /* Status badges — more solid */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+}
+
+/* ── Sidebar ────────────────────────────────────────────────── */
+.sidebar-gradient {
+  background: linear-gradient(175deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+}
+
+/* Subtle texture overlay */
+.sidebar-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+/* ── Recharts customization ─────────────────────────────────── */
+.recharts-tooltip-wrapper { @apply text-xs; }
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line { stroke: #f0f0f0; }
+
+/* ── Print ───────────────────────────────────────────────────── */
+@media print {
+  aside,
+  header,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  main {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+}

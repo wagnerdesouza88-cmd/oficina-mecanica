@@ -1,0 +1,17 @@
+-- AlterTable
+ALTER TABLE "ConfiguracaoSistema" ADD COLUMN     "bairro" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "cep" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "cidade" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "cnpj" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "complemento" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "email" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "estado" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "inscricaoEstadual" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "nomeEmpresarial" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "nomeFantasia" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "numero" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "rua" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "telefone" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "whatsapp" TEXT NOT NULL DEFAULT '',
+ALTER COLUMN "nomeOficina" SET DEFAULT 'AutoGest',
+ALTER COLUMN "slogan" SET DEFAULT 'Gestão Automotiva';

@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Cliente {
+  id        String    @id @default(cuid())
+  nome      String
+  telefone  String
+  email     String?
+  cpf       String?   @unique
+  createdAt DateTime  @default(now())
+  veiculos  Veiculo[]
+}
+
+model Veiculo {
+  id            String         @id @default(cuid())
+  clienteId     String
+  placa         String         @unique
+  marca         String
+  modelo        String
+  ano           Int
+  cor           String
+  createdAt     DateTime       @default(now())
+  cliente       Cliente        @relation(fields: [clienteId], references: [id])
+  ordensServico OrdemServico[]
+}
+
+model OrdemServico {
+  id                   String                @id @default(cuid())
+  veiculoId            String
+  status               Status                @default(ABERTA)
+  descricao            String?
+  total                Decimal               @default(0) @db.Decimal(10, 2)
+  dataEntrada          DateTime              @default(now())
+  previsaoEntrega      DateTime?
+  dataEntrega          DateTime?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  veiculo              Veiculo               @relation(fields: [veiculoId], references: [id])
+  itens                ItemOrdemServico[]
+  pagamento            Pagamento?
+  pecas                PecaOrdemServico[]
+  movimentacoesEstoque MovimentacaoEstoque[]
+}
+
+model TipoServico {
+  id            String             @id @default(cuid())
+  nome          String
+  categoria     String
+  precoSugerido Decimal            @default(0) @db.Decimal(10, 2)
+  ativo         Boolean            @default(true)
+  createdAt     DateTime           @default(now())
+  itens         ItemOrdemServico[]
+}
+
+model ItemOrdemServico {
+  id            String       @id @default(cuid())
+  ordemId       String
+  tipoServicoId String?
+  nome          String
+  preco         Decimal      @db.Decimal(10, 2)
+  ordem         OrdemServico @relation(fields: [ordemId], references: [id], onDelete: Cascade)
+  tipoServico   TipoServico? @relation(fields: [tipoServicoId], references: [id], onDelete: SetNull)
+}
+
+model Pagamento {
+  id             String          @id @default(cuid())
+  ordemServicoId String          @unique
+  valor          Decimal         @db.Decimal(10, 2)
+  formaPagamento FormaPagamento
+  parcelas       Int             @default(1)
+  valorParcela   Decimal         @db.Decimal(10, 2)
+  status         StatusPagamento @default(PAGO)
+  dataPagamento  DateTime?
+  observacoes    String?
+  createdAt      DateTime        @default(now())
+  ordemServico   OrdemServico    @relation(fields: [ordemServicoId], references: [id])
+}
+
+model ContaPagar {
+  id            String              @id @default(cuid())
+  descricao     String
+  categoria     CategoriaContaPagar
+  valor         Decimal             @db.Decimal(10, 2)
+  vencimento    DateTime
+  status        StatusContaPagar    @default(PENDENTE)
+  dataPagamento DateTime?
+  observacoes   String?
+  createdAt     DateTime            @default(now())
+}
+
+model Produto {
+  id               String                @id @default(cuid())
+  codigo           String                @unique
+  nome             String
+  categoria        CategoriaProduto
+  marca            String?
+  unidade          UnidadeProduto
+  precoCompra      Decimal               @db.Decimal(10, 2)
+  precoVenda       Decimal               @db.Decimal(10, 2)
+  quantidadeAtual  Decimal               @default(0) @db.Decimal(10, 3)
+  quantidadeMinima Decimal               @default(0) @db.Decimal(10, 3)
+  fornecedor       String?
+  ativo            Boolean               @default(true)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  movimentacoes    MovimentacaoEstoque[]
+  pecasOS          PecaOrdemServico[]
+}
+
+model MovimentacaoEstoque {
+  id                 String           @id @default(cuid())
+  produtoId          String
+  tipo               TipoMovimentacao
+  quantidade         Decimal          @db.Decimal(10, 3)
+  quantidadeAnterior Decimal          @db.Decimal(10, 3)
+  quantidadeAtual    Decimal          @db.Decimal(10, 3)
+  motivo             String?
+  ordemServicoId     String?
+  createdAt          DateTime         @default(now())
+  produto            Produto          @relation(fields: [produtoId], references: [id])
+  ordemServico       OrdemServico?    @relation(fields: [ordemServicoId], references: [id])
+}
+
+model PecaOrdemServico {
+  id             String       @id @default(cuid())
+  ordemServicoId String
+  produtoId      String
+  quantidade     Decimal      @db.Decimal(10, 3)
+  precoUnitario  Decimal      @db.Decimal(10, 2)
+  subtotal       Decimal      @db.Decimal(10, 2)
+  ordem          OrdemServico @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
+  produto        Produto      @relation(fields: [produtoId], references: [id])
+}
+
+enum Status {
+  ABERTA
+  EM_ANDAMENTO
+  AGUARDANDO_PECA
+  CONCLUIDA
+  CANCELADA
+}
+
+enum FormaPagamento {
+  DINHEIRO
+  DEBITO
+  CREDITO
+  PIX
+  BOLETO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  PAGO
+  CANCELADO
+}
+
+enum CategoriaContaPagar {
+  FORNECEDOR
+  ALUGUEL
+  ENERGIA
+  AGUA
+  INTERNET
+  SALARIO
+  IMPOSTO
+  OUTRO
+}
+
+enum StatusContaPagar {
+  PENDENTE
+  PAGO
+  VENCIDO
+}
+
+enum CategoriaProduto {
+  PECA
+  LUBRIFICANTE
+  FILTRO
+  FLUIDO
+  PNEU
+  ELETRICO
+  OUTRO
+}
+
+enum UnidadeProduto {
+  UN
+  L
+  KG
+  ML
+}
+
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+  AJUSTE
+}
+
+model ConfiguracaoSistema {
+  id                String   @id @default(cuid())
+  nomeOficina       String   @default("AutoGest")
+  slogan            String   @default("Gestão Automotiva")
+  nomeEmpresarial   String   @default("")
+  nomeFantasia      String   @default("")
+  cnpj              String   @default("")
+  inscricaoEstadual String   @default("")
+  rua               String   @default("")
+  numero            String   @default("")
+  complemento       String   @default("")
+  bairro            String   @default("")
+  cidade            String   @default("")
+  estado            String   @default("")
+  cep               String   @default("")
+  telefone          String   @default("")
+  whatsapp          String   @default("")
+  email             String   @default("")
+  corPrimaria       String   @default("#1e3a5f")
+  corSecundaria     String   @default("#f97316")
+  logoBase64        String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
