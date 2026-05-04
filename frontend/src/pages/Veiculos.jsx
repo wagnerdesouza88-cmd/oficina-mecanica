@@ -524,16 +524,16 @@ export default function Veiculos() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
                 <tr>
-                  <th className="px-6 py-3 text-left">Placa</th>
-                  <th className="px-6 py-3 text-left">Marca / Modelo</th>
-                  <th className="px-6 py-3 text-left">Ano</th>
-                  <th className="px-6 py-3 text-left">Cor</th>
-                  <th className="px-6 py-3 text-left">Proprietário</th>
-                  <th className="px-6 py-3 text-left">Cadastro</th>
-                  <th className="px-6 py-3 text-center">Ações</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Placa</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Marca / Modelo</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Ano</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Cor</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Proprietário</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden lg:table-cell">Cadastro</th>
+                  <th className="px-4 py-3 text-center whitespace-nowrap">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -541,34 +541,34 @@ export default function Veiculos() {
                   const cor = CORES.find((c) => c.nome === v.cor)
                   return (
                     <tr key={v.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <span className="font-mono font-bold text-[#1e3a5f] bg-blue-50 px-2.5 py-1 rounded-lg text-xs tracking-widest">
                           {maskPlaca(v.placa)}
                         </span>
                       </td>
-                      <td className="px-6 py-3 font-medium text-gray-800">
-                        {v.marca} <span className="text-gray-500 font-normal">{v.modelo}</span>
+                      <td className="px-4 py-3 whitespace-nowrap font-medium text-gray-800 max-w-[160px]">
+                        <span className="truncate block">{v.marca} <span className="text-gray-500 font-normal">{v.modelo}</span></span>
                       </td>
-                      <td className="px-6 py-3 text-gray-600">{v.ano}</td>
-                      <td className="px-6 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap text-gray-600 hidden md:table-cell">{v.ano}</td>
+                      <td className="px-4 py-3 whitespace-nowrap hidden md:table-cell">
                         <div className="flex items-center gap-2">
                           <div className="w-3.5 h-3.5 rounded-full border border-gray-300 flex-shrink-0"
                             style={{ backgroundColor: cor?.hex ?? '#ccc' }} />
                           <span className="text-gray-600">{v.cor}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap max-w-[150px]">
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 rounded-full bg-[#1e3a5f] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
                             {v.cliente.nome.charAt(0).toUpperCase()}
                           </div>
-                          <span className="text-gray-600">{v.cliente.nome}</span>
+                          <span className="text-gray-600 truncate">{v.cliente.nome}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-3 text-gray-400 text-xs">
+                      <td className="px-4 py-3 whitespace-nowrap text-gray-400 text-xs hidden lg:table-cell">
                         {new Date(v.createdAt).toLocaleDateString('pt-BR')}
                       </td>
-                      <td className="px-6 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center justify-center gap-1">
                           <button onClick={() => abrirModalEditar(v)}
                             className="p-1.5 rounded-lg hover:bg-blue-50 text-gray-400 hover:text-[#1e3a5f] transition-colors" title="Editar">

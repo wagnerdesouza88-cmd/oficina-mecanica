@@ -182,56 +182,56 @@ export default function Clientes() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
                 <tr>
-                  <th className="px-6 py-3 text-left">Nome</th>
-                  <th className="px-6 py-3 text-left">Telefone</th>
-                  <th className="px-6 py-3 text-left">E-mail</th>
-                  <th className="px-6 py-3 text-left">CPF</th>
-                  <th className="px-6 py-3 text-left">Cliente desde</th>
-                  <th className="px-6 py-3 text-center">Ações</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Nome</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Telefone</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">E-mail</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden lg:table-cell">CPF</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden lg:table-cell">Cliente desde</th>
+                  <th className="px-4 py-3 text-center whitespace-nowrap">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {filtrados.map((c) => (
                   <tr key={c.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap max-w-[200px]">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-[#1e3a5f] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
                           {c.nome.charAt(0).toUpperCase()}
                         </div>
-                        <span className="font-medium text-gray-800">{c.nome}</span>
+                        <span className="font-medium text-gray-800 truncate">{c.nome}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div className="flex items-center gap-1.5 text-gray-600">
-                        <Phone size={13} className="text-gray-400" />
+                        <Phone size={13} className="text-gray-400 flex-shrink-0" />
                         {maskTelefone(c.telefone)}
                       </div>
                     </td>
-                    <td className="px-6 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap hidden md:table-cell max-w-[180px]">
                       {c.email ? (
                         <div className="flex items-center gap-1.5 text-gray-600">
-                          <Mail size={13} className="text-gray-400" />
-                          {c.email}
+                          <Mail size={13} className="text-gray-400 flex-shrink-0" />
+                          <span className="truncate">{c.email}</span>
                         </div>
                       ) : (
                         <span className="text-gray-300 text-xs">—</span>
                       )}
                     </td>
-                    <td className="px-6 py-3 text-gray-600">
+                    <td className="px-4 py-3 whitespace-nowrap text-gray-600 hidden lg:table-cell">
                       {c.cpf ? maskCPF(c.cpf) : <span className="text-gray-300 text-xs">—</span>}
                     </td>
-                    <td className="px-6 py-3">
-                      <p className="text-gray-700 text-xs">
+                    <td className="px-4 py-3 hidden lg:table-cell">
+                      <p className="text-gray-700 text-xs whitespace-nowrap">
                         {new Date(c.createdAt).toLocaleDateString('pt-BR')}
                       </p>
-                      <p className="text-gray-400 text-xs mt-0.5">
+                      <p className="text-gray-400 text-xs mt-0.5 whitespace-nowrap">
                         há {tempoCliente(c.createdAt)}
                       </p>
                     </td>
-                    <td className="px-6 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div className="flex items-center justify-center gap-1">
                         <button
                           onClick={() => abrirModalEditar(c)}

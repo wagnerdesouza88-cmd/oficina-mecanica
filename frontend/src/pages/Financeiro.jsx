@@ -179,17 +179,17 @@ function ContasReceber({ resumo, loadingResumo, onResumoUpdate }) {
           <p className="text-center text-sm text-gray-400 py-16">Nenhuma OS concluída</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[650px]">
               <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-3 text-left">OS</th>
-                  <th className="px-4 py-3 text-left">Cliente / Veículo</th>
-                  <th className="px-4 py-3 text-right">Valor OS</th>
-                  <th className="px-4 py-3 text-left">Forma</th>
-                  <th className="px-4 py-3 text-left">Parcelas</th>
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-left">Data Pagto</th>
-                  <th className="px-4 py-3 text-center">Ação</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">OS</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Cliente / Veículo</th>
+                  <th className="px-4 py-3 text-right whitespace-nowrap">Valor OS</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Forma</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden lg:table-cell">Parcelas</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Status</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Data Pagto</th>
+                  <th className="px-4 py-3 text-center whitespace-nowrap">Ação</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -446,15 +446,15 @@ function ContasPagar({ resumo, loadingResumo, onResumoUpdate }) {
           <p className="text-center text-sm text-gray-400 py-16">Nenhuma conta cadastrada</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[550px]">
               <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-3 text-left">Descrição</th>
-                  <th className="px-4 py-3 text-left">Categoria</th>
-                  <th className="px-4 py-3 text-right">Valor</th>
-                  <th className="px-4 py-3 text-left">Vencimento</th>
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-center">Ações</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Descrição</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Categoria</th>
+                  <th className="px-4 py-3 text-right whitespace-nowrap">Valor</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Vencimento</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Status</th>
+                  <th className="px-4 py-3 text-center whitespace-nowrap">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">

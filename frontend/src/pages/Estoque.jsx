@@ -237,18 +237,19 @@ export default function Estoque() {
                 <p className="text-sm font-medium">Nenhum produto encontrado</p>
               </div>
             ) : (
-              <table className="w-full text-sm">
+              <div className="overflow-x-auto">
+              <table className="w-full text-sm min-w-[700px]">
                 <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
                   <tr>
-                    <th className="px-5 py-3 text-left">Código</th>
-                    <th className="px-5 py-3 text-left">Produto</th>
-                    <th className="px-5 py-3 text-left">Categoria</th>
-                    <th className="px-5 py-3 text-right">Estoque</th>
-                    <th className="px-5 py-3 text-right">Mín.</th>
-                    <th className="px-5 py-3 text-right">Pr. Compra</th>
-                    <th className="px-5 py-3 text-right">Pr. Venda</th>
-                    <th className="px-5 py-3 text-center">Status</th>
-                    <th className="px-5 py-3" />
+                    <th className="px-4 py-3 text-left whitespace-nowrap">Código</th>
+                    <th className="px-4 py-3 text-left whitespace-nowrap">Produto</th>
+                    <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Categoria</th>
+                    <th className="px-4 py-3 text-right whitespace-nowrap">Estoque</th>
+                    <th className="px-4 py-3 text-right whitespace-nowrap hidden md:table-cell">Mín.</th>
+                    <th className="px-4 py-3 text-right whitespace-nowrap hidden lg:table-cell">Pr. Compra</th>
+                    <th className="px-4 py-3 text-right whitespace-nowrap">Pr. Venda</th>
+                    <th className="px-4 py-3 text-center whitespace-nowrap hidden md:table-cell">Status</th>
+                    <th className="px-4 py-3" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
@@ -310,6 +311,7 @@ export default function Estoque() {
                   })}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
         </div>

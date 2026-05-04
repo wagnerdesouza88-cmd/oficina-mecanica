@@ -229,7 +229,7 @@ function PecaCustoInput({ produtos, onAdicionar }) {
 
   function adicionar() {
     if (!selecionado) return
-    const quantidade = parseFloat(qtd)
+    const quantidade = parseInt(qtd, 10)
     if (!quantidade || quantidade <= 0) return toast.error('Quantidade inválida')
     onAdicionar({
       _id: `custo_${selecionado.id}_${Date.now()}`,
@@ -266,7 +266,7 @@ function PecaCustoInput({ produtos, onAdicionar }) {
           </ul>
         )}
       </div>
-      <input type="number" step="0.001" min="0.001" value={qtd} onChange={(e) => setQtd(e.target.value)}
+      <input type="number" step="1" min="1" value={qtd} onChange={(e) => setQtd(e.target.value)}
         className="w-16 px-2 py-1 text-xs border border-gray-200 rounded-lg focus:outline-none text-right bg-white" />
       <button type="button" onClick={adicionar} disabled={!selecionado}
         className="px-2.5 py-1 text-xs bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors disabled:opacity-40 font-medium">
@@ -308,8 +308,8 @@ function ServicoCard({ item, produtos, onUpdate, onRemove }) {
         {item.tipoServicoId === null && (
           <span className="text-xs bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full flex-shrink-0">custom</span>
         )}
-        <button type="button" onClick={() => onRemove(item._id)} className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0">
-          <X size={13} />
+        <button type="button" onClick={() => onRemove(item._id)} className="text-red-400 hover:text-red-600 transition-colors flex-shrink-0" title="Remover serviço">
+          <X size={14} />
         </button>
       </div>
 
@@ -341,7 +341,7 @@ function ServicoCard({ item, produtos, onUpdate, onRemove }) {
                     {Number(peca.quantidade)} {peca.unidade} × {brl(peca.precoCompra)} = <strong className="text-gray-700">{brl(peca.subtotal)}</strong>
                   </span>
                   <button type="button" onClick={() => removerPeca(peca._id)}
-                    className="text-gray-300 hover:text-red-400 transition-colors opacity-0 group-hover/peca:opacity-100 flex-shrink-0">
+                    className="text-gray-300 hover:text-red-500 transition-colors flex-shrink-0">
                     <X size={11} />
                   </button>
                 </div>
@@ -390,7 +390,7 @@ function ProdutoVendaInput({ produtos, onAdicionar }) {
 
   function adicionar() {
     if (!selecionado) return
-    const quantidade = parseFloat(qtd)
+    const quantidade = parseInt(qtd, 10)
     if (!quantidade || quantidade <= 0) return toast.error('Quantidade inválida')
     onAdicionar({
       _id: `venda_${selecionado.id}_${Date.now()}`,
@@ -434,7 +434,7 @@ function ProdutoVendaInput({ produtos, onAdicionar }) {
             </ul>
           )}
         </div>
-        <input type="number" step="0.001" min="0.001" value={qtd} onChange={(e) => setQtd(e.target.value)}
+        <input type="number" step="1" min="1" value={qtd} onChange={(e) => setQtd(e.target.value)}
           className="w-20 px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:outline-none text-right bg-white" />
         <button type="button" onClick={adicionar} disabled={!selecionado}
           className="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium disabled:opacity-40">
@@ -684,38 +684,38 @@ export default function Ordens() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm min-w-[700px]">
               <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
                 <tr>
-                  <th className="px-4 py-3 text-left">OS</th>
-                  <th className="px-4 py-3 text-left">Veículo</th>
-                  <th className="px-4 py-3 text-left">Cliente</th>
-                  <th className="px-4 py-3 text-left">Serviços</th>
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-left">Total</th>
-                  <th className="px-4 py-3 text-left">Datas</th>
-                  <th className="px-4 py-3 text-center">Ações</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">OS</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Veículo</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Cliente</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden md:table-cell">Serviços</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Status</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap">Total</th>
+                  <th className="px-4 py-3 text-left whitespace-nowrap hidden lg:table-cell">Datas</th>
+                  <th className="px-4 py-3 text-center whitespace-nowrap">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {filtradas.map((o) => (
                   <tr key={o.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <span className="font-mono text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">#{o.id.slice(-6).toUpperCase()}</span>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <span className="font-mono font-bold text-[#1e3a5f] bg-blue-50 px-2 py-0.5 rounded text-xs tracking-wider">{o.veiculo.placa}</span>
-                      <p className="text-xs text-gray-400 mt-0.5">{o.veiculo.marca} {o.veiculo.modelo}</p>
+                      <p className="text-xs text-gray-400 mt-0.5 truncate max-w-[100px]">{o.veiculo.marca} {o.veiculo.modelo}</p>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 whitespace-nowrap max-w-[130px]">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-[#1e3a5f] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
                           {o.veiculo.cliente.nome.charAt(0).toUpperCase()}
                         </div>
-                        <span className="text-gray-700 text-xs">{o.veiculo.cliente.nome}</span>
+                        <span className="text-gray-700 text-xs truncate">{o.veiculo.cliente.nome}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 max-w-[180px]">
+                    <td className="px-4 py-3 max-w-[180px] hidden md:table-cell">
                       {(o.itens ?? []).length > 0 ? (
                         <div className="space-y-0.5">
                           {o.itens.slice(0, 2).map((i) => (
@@ -727,36 +727,36 @@ export default function Ordens() {
                           {o.itens.length > 2 && <span className="text-xs text-gray-400 pl-3.5">+{o.itens.length - 2} serviço{o.itens.length - 2 > 1 ? 's' : ''}</span>}
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400 italic">{o.descricao ?? '—'}</span>
+                        <span className="text-xs text-gray-400 italic truncate block max-w-[160px]">{o.descricao ?? '—'}</span>
                       )}
                       {(o.pecas ?? []).length > 0 && (
                         <div className="flex items-center gap-1 mt-0.5">
                           <ShoppingCart size={9} className="text-green-500 flex-shrink-0" />
-                          <span className="text-xs text-green-600">{o.pecas.length} produto{o.pecas.length > 1 ? 's' : ''} vendido{o.pecas.length > 1 ? 's' : ''}</span>
+                          <span className="text-xs text-green-600 whitespace-nowrap">{o.pecas.length} produto{o.pecas.length > 1 ? 's' : ''} vendido{o.pecas.length > 1 ? 's' : ''}</span>
                         </div>
                       )}
                     </td>
-                    <td className="px-4 py-3"><StatusSelect ordem={o} onUpdate={handleStatusUpdate} /></td>
+                    <td className="px-4 py-3 whitespace-nowrap"><StatusSelect ordem={o} onUpdate={handleStatusUpdate} /></td>
                     <td className="px-4 py-3 font-semibold text-gray-800 text-xs whitespace-nowrap">{brl(o.total)}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden lg:table-cell">
                       <div className="space-y-0.5 text-xs">
-                        <div className="flex items-center gap-1 text-gray-500">
+                        <div className="flex items-center gap-1 whitespace-nowrap">
                           <Calendar size={10} className="text-gray-400 flex-shrink-0" />
                           <span className="text-gray-400">Ent:</span><span className="text-gray-700">{formatDate(o.dataEntrada)}</span>
                         </div>
                         {o.previsaoEntrega && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1 whitespace-nowrap">
                             <CalendarClock size={10} className="text-blue-400 flex-shrink-0" />
                             <span className="text-gray-400">Prev:</span><span className="text-blue-600">{formatDate(o.previsaoEntrega)}</span>
                           </div>
                         )}
                         {o.dataEntrega ? (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1 whitespace-nowrap">
                             <CalendarCheck size={10} className="text-green-500 flex-shrink-0" />
                             <span className="text-gray-400">Entregue:</span><span className="text-green-600 font-medium">{formatDate(o.dataEntrega)}</span>
                           </div>
                         ) : (!o.previsaoEntrega && (
-                          <div className="flex items-center gap-1 text-gray-300">
+                          <div className="flex items-center gap-1 text-gray-300 whitespace-nowrap">
                             <CalendarCheck size={10} /><span>Entrega: —</span>
                           </div>
                         ))}
@@ -894,7 +894,7 @@ export default function Ordens() {
                             {brl((peca.precoUnitario - peca.precoCompra) * peca.quantidade)}
                           </span>
                           <button type="button" onClick={() => setPecasVenda((prev) => prev.filter((p) => p._id !== peca._id))}
-                            className="text-gray-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0"><X size={12} /></button>
+                            className="text-red-400 hover:text-red-600 transition-colors flex-shrink-0"><X size={12} /></button>
                         </div>
                       ))}
                       <div className="flex justify-between items-center pt-1 border-t border-green-200">
