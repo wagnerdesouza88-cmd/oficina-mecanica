@@ -116,6 +116,97 @@ export async function historico(_req, res) {
   }
 }
 
+export async function lucratividade(req, res) {
+  try {
+    const dataInicio = req.query.dataInicio
+      ? new Date(req.query.dataInicio)
+      : new Date(new Date().getFullYear(), 0, 1)
+    const dataFim = req.query.dataFim
+      ? new Date(req.query.dataFim + 'T23:59:59')
+      : new Date()
+
+    const filtroOS = {
+      dataEntrada: { gte: dataInicio, lte: dataFim },
+      status: { not: 'CANCELADA' },
+    }
+
+    const [itens, pecasVenda] = await Promise.all([
+      prisma.itemOrdemServico.findMany({
+        where: { ordem: filtroOS },
+        select: { nome: true, preco: true, custoPecas: true, valorMaoDeObra: true },
+      }),
+      prisma.pecaOrdemServico.findMany({
+        where: { tipo: 'VENDA_DIRETA', ordem: filtroOS },
+        select: {
+          quantidade: true,
+          precoUnitario: true,
+          precoCompra: true,
+          subtotal: true,
+          produto: { select: { nome: true, codigo: true } },
+        },
+      }),
+    ])
+
+    // Agrupa serviços por nome
+    const servicoMap = {}
+    for (const item of itens) {
+      if (!servicoMap[item.nome]) {
+        servicoMap[item.nome] = { nome: item.nome, quantidade: 0, receita: 0, custoPecas: 0 }
+      }
+      servicoMap[item.nome].quantidade++
+      servicoMap[item.nome].receita    += Number(item.preco)
+      servicoMap[item.nome].custoPecas += Number(item.custoPecas)
+    }
+    const porServico = Object.values(servicoMap).map((s) => ({
+      ...s,
+      lucro:  s.receita - s.custoPecas,
+      margem: s.receita > 0 ? ((s.receita - s.custoPecas) / s.receita) * 100 : 0,
+    })).sort((a, b) => b.receita - a.receita)
+
+    // Agrupa produtos vendidos por nome
+    const produtoMap = {}
+    for (const p of pecasVenda) {
+      const nome = p.produto?.nome ?? 'Produto'
+      if (!produtoMap[nome]) {
+        produtoMap[nome] = { nome, quantidade: 0, receita: 0, custo: 0 }
+      }
+      produtoMap[nome].quantidade += Number(p.quantidade)
+      produtoMap[nome].receita    += Number(p.subtotal)
+      produtoMap[nome].custo      += Number(p.precoCompra) * Number(p.quantidade)
+    }
+    const porProduto = Object.values(produtoMap).map((p) => ({
+      ...p,
+      lucro:  p.receita - p.custo,
+      margem: p.receita > 0 ? ((p.receita - p.custo) / p.receita) * 100 : 0,
+    })).sort((a, b) => b.receita - a.receita)
+
+    const receitaServicos  = itens.reduce((a, i) => a + Number(i.preco), 0)
+    const custoServicos    = itens.reduce((a, i) => a + Number(i.custoPecas), 0)
+    const receitaProdutos  = pecasVenda.reduce((a, p) => a + Number(p.subtotal), 0)
+    const custoProdutos    = pecasVenda.reduce((a, p) => a + Number(p.precoCompra) * Number(p.quantidade), 0)
+
+    res.json({
+      periodo: { inicio: dataInicio, fim: dataFim },
+      resumo: {
+        receitaServicos,
+        custoServicos,
+        lucroServicos:  receitaServicos - custoServicos,
+        receitaProdutos,
+        custoProdutos,
+        lucroProdutos:  receitaProdutos - custoProdutos,
+        receitaTotal:   receitaServicos + receitaProdutos,
+        custoTotal:     custoServicos + custoProdutos,
+        lucroTotal:     (receitaServicos - custoServicos) + (receitaProdutos - custoProdutos),
+      },
+      porServico,
+      porProduto,
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Erro ao calcular lucratividade' })
+  }
+}
+
 export async function relatorios(req, res) {
   try {
     const dataInicio = req.query.dataInicio

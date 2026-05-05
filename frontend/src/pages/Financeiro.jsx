@@ -5,7 +5,8 @@ import {
   DollarSign, TrendingUp, TrendingDown, AlertTriangle,
   CheckCircle2, Clock, Plus, X, Loader2, Pencil, Trash2,
   CreditCard, Banknote, Receipt, FileText, Printer,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, BarChart2, Wrench, Package,
+  ArrowUpRight, ArrowDownRight,
 } from 'lucide-react'
 import api from '../services/api'
 
@@ -946,13 +947,291 @@ function Relatorios() {
   )
 }
 
+// ─── ABA 5: Lucratividade ────────────────────────────────────────────────────
+
+function Lucratividade() {
+  const hoje = new Date()
+  const inicioAno = `${hoje.getFullYear()}-01-01`
+  const hojeStr = hoje.toISOString().slice(0, 10)
+
+  const [dataInicio, setDataInicio] = useState(inicioAno)
+  const [dataFim, setDataFim] = useState(hojeStr)
+  const [dados, setDados] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  async function carregar() {
+    setLoading(true)
+    try {
+      const { data } = await api.get(`/financeiro/lucratividade?dataInicio=${dataInicio}&dataFim=${dataFim}`)
+      setDados(data)
+    } catch {
+      toast.error('Erro ao carregar dados de lucratividade')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { carregar() }, [])
+
+  const r = dados?.resumo
+  const margemTotal = r && r.receitaTotal > 0 ? (r.lucroTotal / r.receitaTotal) * 100 : 0
+
+  return (
+    <div className="space-y-5">
+
+      {/* Filtro de período */}
+      <div className="card p-4 flex flex-wrap items-end gap-3">
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Data início</label>
+          <input type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)}
+            className="px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">Data fim</label>
+          <input type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)}
+            className="px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 bg-white" />
+        </div>
+        <button onClick={carregar} disabled={loading}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-xl transition-colors disabled:opacity-60"
+          style={{ backgroundColor: 'var(--color-primary)' }}>
+          {loading ? <Loader2 size={15} className="animate-spin" /> : <BarChart2 size={15} />}
+          Calcular
+        </button>
+      </div>
+
+      {loading && (
+        <div className="flex items-center justify-center py-20 gap-3 text-gray-400">
+          <Loader2 size={24} className="animate-spin" /><span className="text-sm">Calculando...</span>
+        </div>
+      )}
+
+      {!loading && dados && (
+        <>
+          {/* Cards resumo */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="card p-4 space-y-1">
+              <p className="text-xs text-gray-400 font-medium">Receita Total</p>
+              <p className="text-xl font-bold text-gray-800">{brl(r.receitaTotal)}</p>
+              <p className="text-xs text-gray-400">Serviços + Produtos</p>
+            </div>
+            <div className="card p-4 space-y-1">
+              <p className="text-xs text-gray-400 font-medium">Custo de Peças</p>
+              <p className="text-xl font-bold text-red-600">{brl(r.custoTotal)}</p>
+              <p className="text-xs text-gray-400">Total pago em peças</p>
+            </div>
+            <div className="card p-4 space-y-1 border-2 border-green-200">
+              <p className="text-xs text-green-600 font-medium">Lucro Bruto</p>
+              <p className="text-xl font-bold text-green-700">{brl(r.lucroTotal)}</p>
+              <p className="text-xs text-gray-400">Receita − Custo peças</p>
+            </div>
+            <div className="card p-4 space-y-1">
+              <p className="text-xs text-gray-400 font-medium">Margem Bruta</p>
+              <p className={`text-xl font-bold ${margemTotal >= 50 ? 'text-green-600' : margemTotal >= 30 ? 'text-yellow-600' : 'text-red-600'}`}>
+                {margemTotal.toFixed(1)}%
+              </p>
+              <p className="text-xs text-gray-400">Lucro / Receita</p>
+            </div>
+          </div>
+
+          {/* Detalhamento: Serviços vs Produtos */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {/* Serviços */}
+            <div className="card p-4 space-y-2">
+              <div className="flex items-center gap-2 mb-3">
+                <Wrench size={15} className="text-orange-500" />
+                <h3 className="font-semibold text-gray-800 text-sm">Serviços Realizados</h3>
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 pb-2 border-b border-gray-100">
+                <span>Receita serviços</span><span className="font-semibold text-gray-700">{brl(r.receitaServicos)}</span>
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 pb-2 border-b border-gray-100">
+                <span className="flex items-center gap-1"><ArrowDownRight size={12} className="text-red-400" />Custo de peças (interno)</span>
+                <span className="font-semibold text-red-600">− {brl(r.custoServicos)}</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold pt-1">
+                <span className="text-green-700">Lucro bruto serviços</span>
+                <span className="text-green-700">{brl(r.lucroServicos)}</span>
+              </div>
+              {r.receitaServicos > 0 && (
+                <div className="mt-2">
+                  <div className="flex justify-between text-xs text-gray-400 mb-1">
+                    <span>Margem</span><span>{r.receitaServicos > 0 ? ((r.lucroServicos / r.receitaServicos) * 100).toFixed(1) : 0}%</span>
+                  </div>
+                  <div className="w-full bg-gray-100 rounded-full h-1.5">
+                    <div className="bg-green-500 h-1.5 rounded-full"
+                      style={{ width: `${Math.min(100, r.receitaServicos > 0 ? (r.lucroServicos / r.receitaServicos) * 100 : 0)}%` }} />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Produtos */}
+            <div className="card p-4 space-y-2">
+              <div className="flex items-center gap-2 mb-3">
+                <Package size={15} className="text-green-600" />
+                <h3 className="font-semibold text-gray-800 text-sm">Produtos Vendidos</h3>
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 pb-2 border-b border-gray-100">
+                <span>Receita produtos</span><span className="font-semibold text-gray-700">{brl(r.receitaProdutos)}</span>
+              </div>
+              <div className="flex justify-between text-xs text-gray-500 pb-2 border-b border-gray-100">
+                <span className="flex items-center gap-1"><ArrowDownRight size={12} className="text-red-400" />Custo de compra</span>
+                <span className="font-semibold text-red-600">− {brl(r.custoProdutos)}</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold pt-1">
+                <span className="text-green-700">Lucro bruto produtos</span>
+                <span className="text-green-700">{brl(r.lucroProdutos)}</span>
+              </div>
+              {r.receitaProdutos > 0 ? (
+                <div className="mt-2">
+                  <div className="flex justify-between text-xs text-gray-400 mb-1">
+                    <span>Margem</span><span>{((r.lucroProdutos / r.receitaProdutos) * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="w-full bg-gray-100 rounded-full h-1.5">
+                    <div className="bg-green-500 h-1.5 rounded-full"
+                      style={{ width: `${Math.min(100, (r.lucroProdutos / r.receitaProdutos) * 100)}%` }} />
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400 italic">Nenhum produto vendido no período</p>
+              )}
+            </div>
+          </div>
+
+          {/* Tabela por serviço */}
+          {dados.porServico.length > 0 && (
+            <div className="card overflow-hidden">
+              <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
+                <Wrench size={16} className="text-orange-500" />
+                <h3 className="font-semibold text-gray-800 text-sm">Lucro por Tipo de Serviço</h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[550px]">
+                  <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+                    <tr>
+                      <th className="px-5 py-3 text-left whitespace-nowrap">Serviço</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Qtd.</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Receita</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Custo Peças</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Lucro Bruto</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Margem</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {dados.porServico.map((s) => (
+                      <tr key={s.nome} className="hover:bg-gray-50">
+                        <td className="px-5 py-3 font-medium text-gray-800 whitespace-nowrap max-w-[220px]">
+                          <span className="truncate block">{s.nome}</span>
+                        </td>
+                        <td className="px-4 py-3 text-right text-gray-500 whitespace-nowrap">{s.quantidade}×</td>
+                        <td className="px-4 py-3 text-right font-mono text-gray-700 whitespace-nowrap">{brl(s.receita)}</td>
+                        <td className="px-4 py-3 text-right font-mono text-red-500 whitespace-nowrap">
+                          {s.custoPecas > 0 ? `− ${brl(s.custoPecas)}` : <span className="text-gray-300">—</span>}
+                        </td>
+                        <td className="px-4 py-3 text-right font-mono font-bold text-green-700 whitespace-nowrap">{brl(s.lucro)}</td>
+                        <td className="px-4 py-3 text-right whitespace-nowrap">
+                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${s.margem >= 50 ? 'bg-green-100 text-green-700' : s.margem >= 30 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-600'}`}>
+                            {s.margem.toFixed(1)}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot className="bg-gray-50 border-t-2 border-gray-200">
+                    <tr>
+                      <td className="px-5 py-3 font-bold text-gray-700 text-xs uppercase">Total serviços</td>
+                      <td className="px-4 py-3 text-right text-gray-500 text-xs">{dados.porServico.reduce((a, s) => a + s.quantidade, 0)}×</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-gray-800 whitespace-nowrap">{brl(r.receitaServicos)}</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-red-600 whitespace-nowrap">− {brl(r.custoServicos)}</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-green-700 whitespace-nowrap">{brl(r.lucroServicos)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <span className="text-xs font-bold text-green-700">
+                          {r.receitaServicos > 0 ? ((r.lucroServicos / r.receitaServicos) * 100).toFixed(1) : 0}%
+                        </span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Tabela por produto vendido */}
+          {dados.porProduto.length > 0 && (
+            <div className="card overflow-hidden">
+              <div className="px-5 py-4 border-b border-gray-100 flex items-center gap-2">
+                <Package size={16} className="text-green-600" />
+                <h3 className="font-semibold text-gray-800 text-sm">Lucro por Produto Vendido</h3>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[550px]">
+                  <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+                    <tr>
+                      <th className="px-5 py-3 text-left whitespace-nowrap">Produto</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Qtd.</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Receita</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Custo</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Lucro Bruto</th>
+                      <th className="px-4 py-3 text-right whitespace-nowrap">Margem</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {dados.porProduto.map((p) => (
+                      <tr key={p.nome} className="hover:bg-gray-50">
+                        <td className="px-5 py-3 font-medium text-gray-800 whitespace-nowrap max-w-[220px]">
+                          <span className="truncate block">{p.nome}</span>
+                        </td>
+                        <td className="px-4 py-3 text-right text-gray-500 whitespace-nowrap">{p.quantidade}</td>
+                        <td className="px-4 py-3 text-right font-mono text-gray-700 whitespace-nowrap">{brl(p.receita)}</td>
+                        <td className="px-4 py-3 text-right font-mono text-red-500 whitespace-nowrap">− {brl(p.custo)}</td>
+                        <td className="px-4 py-3 text-right font-mono font-bold text-green-700 whitespace-nowrap">{brl(p.lucro)}</td>
+                        <td className="px-4 py-3 text-right whitespace-nowrap">
+                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${p.margem >= 50 ? 'bg-green-100 text-green-700' : p.margem >= 30 ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-600'}`}>
+                            {p.margem.toFixed(1)}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot className="bg-gray-50 border-t-2 border-gray-200">
+                    <tr>
+                      <td className="px-5 py-3 font-bold text-gray-700 text-xs uppercase">Total produtos</td>
+                      <td className="px-4 py-3 text-right text-gray-500 text-xs">{dados.porProduto.reduce((a, p) => a + p.quantidade, 0)}</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-gray-800 whitespace-nowrap">{brl(r.receitaProdutos)}</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-red-600 whitespace-nowrap">− {brl(r.custoProdutos)}</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-green-700 whitespace-nowrap">{brl(r.lucroProdutos)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <span className="text-xs font-bold text-green-700">
+                          {r.receitaProdutos > 0 ? ((r.lucroProdutos / r.receitaProdutos) * 100).toFixed(1) : 0}%
+                        </span>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {dados.porServico.length === 0 && dados.porProduto.length === 0 && (
+            <div className="card flex flex-col items-center justify-center py-16 text-gray-400">
+              <BarChart2 size={40} className="mb-3 text-gray-200" />
+              <p className="text-sm font-medium">Nenhum dado no período selecionado</p>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
 // ─── Financeiro (principal) ───────────────────────────────────────────────────
 
 const ABAS = [
-  { key: 'receber',   label: 'Contas a Receber', icon: TrendingUp   },
-  { key: 'pagar',     label: 'Contas a Pagar',   icon: TrendingDown },
-  { key: 'fluxo',     label: 'Fluxo de Caixa',   icon: DollarSign   },
-  { key: 'relatorios',label: 'Relatórios',        icon: FileText     },
+  { key: 'receber',      label: 'Contas a Receber', icon: TrendingUp   },
+  { key: 'pagar',        label: 'Contas a Pagar',   icon: TrendingDown },
+  { key: 'fluxo',        label: 'Fluxo de Caixa',   icon: DollarSign   },
+  { key: 'relatorios',   label: 'Relatórios',        icon: FileText     },
+  { key: 'lucratividade',label: 'Lucratividade',     icon: BarChart2    },
 ]
 
 export default function Financeiro() {
@@ -991,10 +1270,11 @@ export default function Financeiro() {
       </div>
 
       {/* Conteúdo */}
-      {aba === 'receber'    && <ContasReceber   resumo={resumo} loadingResumo={loadingResumo} onResumoUpdate={carregarResumo} />}
-      {aba === 'pagar'      && <ContasPagar     resumo={resumo} loadingResumo={loadingResumo} onResumoUpdate={carregarResumo} />}
-      {aba === 'fluxo'      && <FluxoCaixa />}
-      {aba === 'relatorios' && <Relatorios />}
+      {aba === 'receber'       && <ContasReceber   resumo={resumo} loadingResumo={loadingResumo} onResumoUpdate={carregarResumo} />}
+      {aba === 'pagar'         && <ContasPagar     resumo={resumo} loadingResumo={loadingResumo} onResumoUpdate={carregarResumo} />}
+      {aba === 'fluxo'         && <FluxoCaixa />}
+      {aba === 'relatorios'    && <Relatorios />}
+      {aba === 'lucratividade' && <Lucratividade />}
     </div>
   )
 }
