@@ -26,7 +26,7 @@ function Sidebar({ active, onNavigate, theme, onThemeToggle }) {
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
-        <div className="sidebar__brand-mark"><Icons.Logo size={20}/></div>
+        <div className="sidebar__brand-mark"><Icons.Logo size={34}/></div>
         <div className="sidebar__brand-text">
           <span className="sidebar__brand-name">AutoGest</span>
           <span className="sidebar__brand-sub">Gestão Automotiva</span>

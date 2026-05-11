@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>AutoGest — Logo Studies v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0a2540; --ink-2: #06182f; --soft: #425466; --faint: #9aa6b8;
+    --line: #e5e9f0; --line-soft: #eef2f6; --bg: #f6f9fc; --card: #ffffff;
+    --indigo: #635bff; --indigo-deep: #4339c9;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 1240px; margin: 0 auto; padding: 56px 32px 96px; }
+  .hdr { margin-bottom: 40px; }
+  .hdr h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.025em; margin: 0 0 6px; color: var(--ink-2); }
+  .hdr p { color: var(--soft); font-size: 14.5px; max-width: 640px; margin: 0; }
+  .hdr .kicker { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px; }
+  .hdr .kicker::before { content: ""; width: 18px; height: 1px; background: var(--indigo); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .study { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(10,37,64,0.04); }
+  .study__split { display: grid; grid-template-columns: 1fr 1fr; }
+  .study__hero { height: 220px; display: grid; place-items: center; position: relative; overflow: hidden; }
+  .study__hero--light { background: #fafbfc; }
+  .study__hero--dark  { background: #0a0d1f; color: #fff; }
+  .study__meta { padding: 20px 22px 18px; border-top: 1px solid var(--line-soft); }
+  .study__name { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  .study__title { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin: 2px 0 6px; color: var(--ink-2); }
+  .study__desc { font-size: 13px; color: var(--soft); line-height: 1.55; }
+  .study__details { display: flex; gap: 28px; padding: 14px 22px 20px; border-top: 1px solid var(--line-soft); background: #fafbfc; align-items: center; }
+  .study__detail-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 600; margin-bottom: 8px; }
+  .scale { display: flex; align-items: center; gap: 14px; }
+  .lockup { display: inline-flex; align-items: center; gap: 12px; }
+  .lockup__type { font-size: 26px; font-weight: 600; letter-spacing: -0.025em; }
+  .lockup__sub { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); font-weight: 600; line-height: 1; margin-top: 3px; display: block; }
+  .study__hero--dark .lockup__sub { color: rgba(255,255,255,0.4); }
+  .foot { margin-top: 36px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 24px; display: flex; gap: 18px; align-items: center; }
+  .foot p { margin: 0; font-size: 13.5px; color: var(--soft); }
+  .foot strong { color: var(--ink-2); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="hdr">
+    <div class="kicker">Logo Studies v2 · AutoGest</div>
+    <h1>Mais quatro direções — SaaS moderno × DNA automotivo</h1>
+    <p>Esta rodada explora estéticas mais contemporâneas (Linear, Vercel, Notion, Cursor) cruzadas com referências literais à oficina: chave inglesa, disco de freio, diagnóstico, eixo. Marcas que aguentam ser estampadas num crachá e também aparecer com 16px na aba do navegador.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ========== OPTION E — PULSE ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <defs>
+                <linearGradient id="gE" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7a72ff"/><stop offset="100%" stop-color="#4339c9"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#gE)"/>
+              <!-- ECG-style diagnostic trace that forms an implicit A peak -->
+              <path d="M7 26 L14 26 L17 26 L20 17 L24 32 L28 17 L31 26 L34 26 L41 26"
+                    stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="7" cy="26" r="1.6" fill="#fff" opacity="0.55"/>
+              <circle cx="41" cy="26" r="1.6" fill="#fff" opacity="0.55"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <rect x="2" y="2" width="44" height="44" rx="12" fill="#11152b" stroke="rgba(255,255,255,0.08)"/>
+            <path d="M7 26 L14 26 L17 26 L20 17 L24 32 L28 17 L31 26 L34 26 L41 26" stroke="#8b85ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="7" cy="26" r="1.6" fill="#8b85ff" opacity="0.55"/>
+            <circle cx="41" cy="26" r="1.6" fill="#8b85ff" opacity="0.55"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção E</div>
+        <div class="study__title">Pulse · Diagnóstico</div>
+        <div class="study__desc">A linha de um diagnóstico eletrônico — o pico forma sutilmente um “A”. Comunica precisão, tecnologia e o serviço-chave da oficina moderna: o scan eletrônico. Inspirado em marcas de fintech/healthtech atuais (Hex, Plaid, Linear).</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="12" fill="#4339c9"/><path d="M7 26 L20 17 L24 32 L28 17 L41 26" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="12" fill="#4339c9"/><path d="M7 26 L14 26 L17 26 L20 17 L24 32 L28 17 L31 26 L34 26 L41 26" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="12" fill="#4339c9"/><path d="M7 26 L14 26 L17 26 L20 17 L24 32 L28 17 L31 26 L34 26 L41 26" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Inspiração</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">Linear · Plaid · Hex</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OPTION F — DISC ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <!-- Brake disc viewed at angle: ellipse with radial slots + caliper bracket -->
+              <defs>
+                <radialGradient id="gF" cx="0.35" cy="0.4" r="0.85">
+                  <stop offset="0%" stop-color="#3a3270"/>
+                  <stop offset="60%" stop-color="#1a1538"/>
+                  <stop offset="100%" stop-color="#0a0820"/>
+                </radialGradient>
+              </defs>
+              <circle cx="24" cy="24" r="20" fill="url(#gF)"/>
+              <!-- Concentric disc detail -->
+              <circle cx="24" cy="24" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+              <circle cx="24" cy="24" r="6" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+              <circle cx="24" cy="24" r="2.2" fill="#fff"/>
+              <!-- 6 radial slots evenly distributed -->
+              <g stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.6">
+                <line x1="24" y1="11" x2="24" y2="17"/>
+                <line x1="35.3" y1="17.5" x2="30.1" y2="20.5" transform="rotate(0 24 24)"/>
+                <line x1="35.3" y1="30.5" x2="30.1" y2="27.5"/>
+                <line x1="24" y1="37" x2="24" y2="31"/>
+                <line x1="12.7" y1="30.5" x2="17.9" y2="27.5"/>
+                <line x1="12.7" y1="17.5" x2="17.9" y2="20.5"/>
+              </g>
+              <!-- Caliper accent -->
+              <path d="M36 18 Q41 24 36 30" fill="none" stroke="#635bff" stroke-width="3.4" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="20" fill="#11152b" stroke="rgba(255,255,255,0.08)"/>
+            <circle cx="24" cy="24" r="14" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="6" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="1"/>
+            <circle cx="24" cy="24" r="2.2" fill="#f0f2f8"/>
+            <g stroke="#f0f2f8" stroke-width="1.6" stroke-linecap="round" opacity="0.65">
+              <line x1="24" y1="11" x2="24" y2="17"/>
+              <line x1="35.3" y1="17.5" x2="30.1" y2="20.5"/>
+              <line x1="35.3" y1="30.5" x2="30.1" y2="27.5"/>
+              <line x1="24" y1="37" x2="24" y2="31"/>
+              <line x1="12.7" y1="30.5" x2="17.9" y2="27.5"/>
+              <line x1="12.7" y1="17.5" x2="17.9" y2="20.5"/>
+            </g>
+            <path d="M36 18 Q41 24 36 30" fill="none" stroke="#8b85ff" stroke-width="3.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção F</div>
+        <div class="study__title">Disc · Disco de Freio</div>
+        <div class="study__desc">Um disco de freio ventilado abraçado pela pinça em indigo. Referência literal mas elegante — usa profundidade radial e o detalhe da pinça como acento de cor. É a opção mais “oficina” da rodada, sem perder o refinamento.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#0a0820"/><circle cx="24" cy="24" r="6" fill="none" stroke="#fff" stroke-width="2"/><path d="M36 18 Q41 24 36 30" stroke="#635bff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#0a0820"/><circle cx="24" cy="24" r="14" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/><circle cx="24" cy="24" r="2.2" fill="#fff"/><path d="M36 18 Q41 24 36 30" stroke="#635bff" stroke-width="3.4" fill="none" stroke-linecap="round"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#0a0820"/><circle cx="24" cy="24" r="14" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><circle cx="24" cy="24" r="6" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/><circle cx="24" cy="24" r="2.2" fill="#fff"/><path d="M36 18 Q41 24 36 30" stroke="#635bff" stroke-width="3.4" fill="none" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Inspiração</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">Polestar · Bosch · Brembo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OPTION G — MESH ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <!-- Vercel/Linear-style: two overlapping geometric planes with gradient mesh forming abstract A -->
+              <defs>
+                <linearGradient id="gG1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#8b85ff"/>
+                  <stop offset="100%" stop-color="#4339c9"/>
+                </linearGradient>
+                <linearGradient id="gG2" x1="1" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#06182f"/>
+                  <stop offset="100%" stop-color="#0a2540"/>
+                </linearGradient>
+                <filter id="gGblur"><feGaussianBlur stdDeviation="0.3"/></filter>
+              </defs>
+              <!-- Background plane -->
+              <path d="M24 6 L40 38 L8 38 Z" fill="url(#gG2)"/>
+              <!-- Foreground plane offset -->
+              <path d="M24 14 L42 38 L24 38 Z" fill="url(#gG1)" opacity="0.95"/>
+              <!-- Highlight stroke -->
+              <path d="M24 6 L40 38" stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <defs>
+              <linearGradient id="gG1d" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#8b85ff"/>
+                <stop offset="100%" stop-color="#4339c9"/>
+              </linearGradient>
+            </defs>
+            <path d="M24 6 L40 38 L8 38 Z" fill="#f0f2f8" opacity="0.95"/>
+            <path d="M24 14 L42 38 L24 38 Z" fill="url(#gG1d)"/>
+            <path d="M24 6 L40 38" stroke="rgba(255,255,255,0.20)" stroke-width="0.6"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção G</div>
+        <div class="study__title">Mesh · Planos sobrepostos</div>
+        <div class="study__desc">Dois triângulos sobrepostos formam um “A” abstrato com sensação de profundidade — o vocabulário visual de Vercel, Linear, Cursor. Não usa box-container: o símbolo é o ícone, deixando ele respirar e parecer maior em qualquer contexto.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><path d="M24 6 L40 38 L8 38 Z" fill="#0a2540"/><path d="M24 14 L42 38 L24 38 Z" fill="#635bff"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><path d="M24 6 L40 38 L8 38 Z" fill="#0a2540"/><path d="M24 14 L42 38 L24 38 Z" fill="#635bff"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><path d="M24 6 L40 38 L8 38 Z" fill="#0a2540"/><path d="M24 14 L42 38 L24 38 Z" fill="#635bff"/><path d="M24 6 L40 38" stroke="rgba(255,255,255,0.18)" stroke-width="0.6"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Inspiração</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">Vercel · Linear · Cursor</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OPTION H — WRENCH ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <!-- Wrench head as an A — open jaws form the A peak, with the slot as crossbar -->
+              <defs>
+                <linearGradient id="gH" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7a72ff"/>
+                  <stop offset="100%" stop-color="#4339c9"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="44" height="44" rx="11" fill="url(#gH)"/>
+              <rect x="2" y="2" width="44" height="44" rx="11" fill="none" stroke="rgba(255,255,255,0.18)"/>
+              <!-- Wrench-A: hexagonal "head" at top + bar shaft -->
+              <g fill="#fff">
+                <!-- Hex head, abstracted -->
+                <path d="M24 9 L31 13 L31 21 L24 25 L17 21 L17 13 Z"/>
+                <!-- inner hole (negative space = crossbar of A) -->
+                <path d="M24 14 L27.5 16 L27.5 20 L24 22 L20.5 20 L20.5 16 Z" fill="#4339c9"/>
+                <!-- Two diverging shafts forming A legs -->
+                <rect x="17.5" y="22" width="3.2" height="16" rx="1.6" transform="rotate(8 19.1 30)"/>
+                <rect x="27.3" y="22" width="3.2" height="16" rx="1.6" transform="rotate(-8 28.9 30)"/>
+                <!-- Crossbar accent -->
+                <rect x="19" y="32" width="10" height="2.4" rx="1.2" fill="#fff" opacity="0.55"/>
+              </g>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <rect x="2" y="2" width="44" height="44" rx="11" fill="#11152b" stroke="rgba(255,255,255,0.08)"/>
+            <g fill="#8b85ff">
+              <path d="M24 9 L31 13 L31 21 L24 25 L17 21 L17 13 Z"/>
+              <path d="M24 14 L27.5 16 L27.5 20 L24 22 L20.5 20 L20.5 16 Z" fill="#11152b"/>
+              <rect x="17.5" y="22" width="3.2" height="16" rx="1.6" transform="rotate(8 19.1 30)"/>
+              <rect x="27.3" y="22" width="3.2" height="16" rx="1.6" transform="rotate(-8 28.9 30)"/>
+              <rect x="19" y="32" width="10" height="2.4" rx="1.2" opacity="0.55"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção H</div>
+        <div class="study__title">Spanner · Chave + A</div>
+        <div class="study__desc">Cabeça sextavada de chave de boca como o ápice de um “A”, com dois eixos divergentes formando as pernas. Une o símbolo universal da oficina ao monograma da marca — distintivo, único, traduzível em qualquer mídia.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#4339c9"/><path d="M24 9 L31 13 L31 21 L24 25 L17 21 L17 13 Z" fill="#fff"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#4339c9"/><g fill="#fff"><path d="M24 9 L31 13 L31 21 L24 25 L17 21 L17 13 Z"/><path d="M24 14 L27.5 16 L27.5 20 L24 22 L20.5 20 L20.5 16 Z" fill="#4339c9"/><rect x="17.5" y="22" width="3.2" height="16" rx="1.6" transform="rotate(8 19.1 30)"/><rect x="27.3" y="22" width="3.2" height="16" rx="1.6" transform="rotate(-8 28.9 30)"/></g></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#4339c9"/><g fill="#fff"><path d="M24 9 L31 13 L31 21 L24 25 L17 21 L17 13 Z"/><path d="M24 14 L27.5 16 L27.5 20 L24 22 L20.5 20 L20.5 16 Z" fill="#4339c9"/><rect x="17.5" y="22" width="3.2" height="16" rx="1.6" transform="rotate(8 19.1 30)"/><rect x="27.3" y="22" width="3.2" height="16" rx="1.6" transform="rotate(-8 28.9 30)"/><rect x="19" y="32" width="10" height="2.4" rx="1.2" opacity="0.55"/></g></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Inspiração</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">Snap-on · Carfax · Tekmetric</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+    <p><strong>Direções desta rodada:</strong> E (Pulse · diagnóstico), F (Disc · disco de freio), G (Mesh · SaaS abstrato), H (Spanner · chave inglesa). Combine com as anteriores (A, B, C, D) ou peça refinos — cor, estrutura, lockup.</p>
+  </div>
+</div>
+</body>
+</html>

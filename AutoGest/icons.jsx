@@ -60,13 +60,39 @@ const Icons = {
       <circle cx="12" cy="16" r="1.2" fill="currentColor"/>
     </Icon>
   ),
-  Logo: (p) => (
-    <svg viewBox="0 0 24 24" width={p?.size||22} height={p?.size||22} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 16a9 9 0 0 1 18 0"/>
-      <path d="m13 10.5-3 5.5"/>
-      <circle cx="12" cy="16" r="1.4" fill="currentColor"/>
-    </svg>
-  ),
+  Logo: (p) => {
+    const s = p?.size || 32;
+    return (
+      <svg viewBox="0 0 64 64" width={s} height={s} fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="ag-apex-fg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#8b85ff"/>
+            <stop offset="100%" stopColor="#4339c9"/>
+          </linearGradient>
+        </defs>
+        {/* Outer dial ring */}
+        <circle cx="32" cy="32" r="29" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="1"/>
+        {/* 7 cardinal tick marks (bottom tick replaced by A apex) */}
+        <g stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.2" strokeLinecap="round">
+          <line x1="32" y1="5" x2="32" y2="9"/>
+          <line x1="51.1" y1="12.9" x2="48.3" y2="15.7"/>
+          <line x1="59" y1="32" x2="55" y2="32"/>
+          <line x1="51.1" y1="51.1" x2="48.3" y2="48.3"/>
+          <line x1="12.9" y1="12.9" x2="15.7" y2="15.7"/>
+          <line x1="5" y1="32" x2="9" y2="32"/>
+          <line x1="12.9" y1="51.1" x2="15.7" y2="48.3"/>
+        </g>
+        {/* 240° tachometer arc in indigo */}
+        <path d="M 11.4 47 A 24 24 0 1 1 52.6 47" stroke="#635bff" strokeWidth="1.6" strokeLinecap="round" fill="none" strokeOpacity="0.75"/>
+        {/* Geometric A — back triangle (theme-aware) */}
+        <path d="M32 16 L46 44 L18 44 Z" fill="currentColor"/>
+        {/* Geometric A — front triangle (indigo gradient) */}
+        <path d="M32 23 L48 44 L32 44 Z" fill="url(#ag-apex-fg)"/>
+        {/* Apex dot at the dial pivot */}
+        <circle cx="32" cy="16" r="1.6" fill="#fff"/>
+      </svg>
+    );
+  },
 };
 
 window.Icons = Icons;
