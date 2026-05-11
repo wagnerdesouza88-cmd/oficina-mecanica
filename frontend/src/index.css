@@ -4,9 +4,9 @@
 
 /* ── CSS Variables (default theme) ─────────────────────────── */
 :root {
-  --color-primary: #1e3a5f;
-  --color-primary-dark: #142840;
-  --color-primary-light: rgba(30, 58, 95, 0.08);
+  --color-primary: #0a1f44;
+  --color-primary-dark: #071530;
+  --color-primary-light: rgba(10, 31, 68, 0.08);
   --color-secondary: #f97316;
   --color-secondary-dark: #ea6c0a;
   --color-secondary-light: rgba(249, 115, 22, 0.1);
@@ -47,11 +47,17 @@
 
   /* Override hardcoded colors so the theme applies everywhere */
   .bg-\[\#1e3a5f\]  { background-color: var(--color-primary) !important; }
+  .bg-\[\#0a1f44\]  { background-color: var(--color-primary) !important; }
   .bg-\[\#162d4a\]  { background-color: var(--color-primary-dark) !important; }
   .bg-\[\#142840\]  { background-color: var(--color-primary-dark) !important; }
   .text-\[\#1e3a5f\] { color: var(--color-primary) !important; }
+  .text-\[\#0a1f44\] { color: var(--color-primary) !important; }
   .border-\[\#1e3a5f\] { border-color: var(--color-primary) !important; }
+  .border-\[\#0a1f44\] { border-color: var(--color-primary) !important; }
   .ring-\[\#1e3a5f\]  { --tw-ring-color: var(--color-primary) !important; }
+  .ring-\[\#0a1f44\]  { --tw-ring-color: var(--color-primary) !important; }
+  .focus\:ring-\[\#1e3a5f\]\/30:focus { --tw-ring-color: rgba(10,31,68,0.3) !important; }
+  .focus\:ring-\[\#0a1f44\]\/30:focus { --tw-ring-color: rgba(10,31,68,0.3) !important; }
 }
 
 /* ── Card component ────────────────────────────────────────── */

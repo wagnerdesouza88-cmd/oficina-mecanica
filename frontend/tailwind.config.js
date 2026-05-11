@@ -4,16 +4,16 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        heading: ['Barlow Condensed', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
       },
       colors: {
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          500: '#1e3a5f',
-          600: '#1a3352',
-          700: '#142840',
+          50: '#eef2f8',
+          100: '#d6e0ef',
+          500: '#0a1f44',
+          600: '#081a3a',
+          700: '#071530',
         },
         accent: {
           400: '#fb923c',
@@ -22,9 +22,9 @@ export default {
         },
       },
       boxShadow: {
-        card: '0 2px 8px -2px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04)',
-        'card-hover': '0 8px 24px -4px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)',
-        'btn-primary': '0 4px 14px -2px rgba(30,58,95,.4)',
+        card: '0 1px 4px -1px rgba(10,31,68,.08), 0 0 0 1px rgba(10,31,68,.05)',
+        'card-hover': '0 6px 20px -4px rgba(10,31,68,.12), 0 0 0 1px rgba(10,31,68,.07)',
+        'btn-primary': '0 4px 14px -2px rgba(10,31,68,.4)',
         'btn-secondary': '0 4px 14px -2px rgba(249,115,22,.4)',
       },
       backgroundImage: {

@@ -75,35 +75,36 @@ export default function Layout() {
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Sidebar */}
       <aside
-        className="w-64 flex flex-col shadow-2xl flex-shrink-0"
-        style={{ backgroundColor: 'var(--color-primary)' }}
+        className="w-64 flex flex-col flex-shrink-0"
+        style={{ backgroundColor: 'var(--color-primary)', boxShadow: '2px 0 12px rgba(0,0,0,0.2)' }}
       >
         {/* Logo / Identidade */}
-        <div className="flex items-center gap-3 px-5 py-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+        <div className="flex items-center gap-3 px-4 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
           {config.logoBase64 ? (
-            <img src={config.logoBase64} alt="Logo" className="w-10 h-10 rounded-xl object-cover flex-shrink-0" />
+            <img src={config.logoBase64} alt="Logo" className="w-9 h-9 rounded-xl object-cover flex-shrink-0" />
           ) : (
-            <div className="rounded-xl p-1.5 flex-shrink-0 flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(255,255,255,0.1)', width: 40, height: 40 }}>
+            <div className="rounded-xl flex-shrink-0 flex items-center justify-center"
+              style={{ backgroundColor: 'rgba(255,255,255,0.1)', width: 36, height: 36, padding: 6 }}>
               <AutoGestLogo secondary={config.corSecundaria || 'var(--color-secondary)'} />
             </div>
           )}
           <div className="min-w-0">
-            <h1 className="text-white font-bold text-base leading-tight tracking-tight">
+            <h1 className="text-white font-bold text-[15px] leading-tight tracking-tight">
               AutoGest
             </h1>
-            <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-[11px] truncate mt-0.5 font-medium uppercase tracking-wider"
+              style={{ color: 'rgba(255,255,255,0.35)' }}>
               {nomeOficina}
             </p>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 overflow-y-auto space-y-5">
+        <nav className="flex-1 px-2.5 py-3 overflow-y-auto space-y-4">
           {NAV_GROUPS.map((group) => (
             <div key={group.label}>
-              <p className="px-3 mb-1.5 text-xs font-semibold uppercase tracking-widest"
-                style={{ color: 'rgba(255,255,255,0.3)' }}>
+              <p className="px-3 mb-1 text-[10px] font-semibold uppercase tracking-[0.08em]"
+                style={{ color: 'rgba(255,255,255,0.28)' }}>
                 {group.label}
               </p>
               <div className="space-y-0.5">
@@ -113,17 +114,17 @@ export default function Layout() {
                     to={to}
                     end={end}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
-                        isActive ? '' : 'hover:bg-white/10'
+                      `flex items-center gap-2.5 px-3 py-2 rounded-xl text-[13.5px] font-medium transition-all duration-150 group ${
+                        isActive ? '' : 'hover:bg-white/[0.06]'
                       }`
                     }
-                    style={({ isActive }) => isActive ? activeStyle : { color: 'rgba(255,255,255,0.7)' }}
+                    style={({ isActive }) => isActive ? activeStyle : { color: 'rgba(255,255,255,0.65)' }}
                   >
                     {({ isActive }) => (
                       <>
-                        <Icon size={17} className={isActive ? 'text-white' : 'opacity-70 group-hover:opacity-100 transition-opacity'} />
+                        <Icon size={16} className={isActive ? 'text-white' : 'opacity-70 group-hover:opacity-100 transition-opacity'} />
                         <span className="flex-1">{label}</span>
-                        {isActive && <ChevronRight size={13} className="text-white/70" />}
+                        {isActive && <ChevronRight size={12} className="text-white/60" />}
                       </>
                     )}
                   </NavLink>
@@ -134,8 +135,8 @@ export default function Layout() {
         </nav>
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
-          <p className="text-center text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <div className="px-4 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <p className="text-center text-[11px]" style={{ color: 'rgba(255,255,255,0.25)' }}>
             v1.0.0 · AutoGest
           </p>
         </div>
@@ -144,22 +145,23 @@ export default function Layout() {
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200/80 px-6 py-3.5 flex items-center justify-between flex-shrink-0 shadow-sm">
+        <header className="bg-white border-b border-gray-200/60 px-6 py-3 flex items-center justify-between flex-shrink-0"
+          style={{ boxShadow: '0 1px 3px rgba(10,31,68,0.06)' }}>
           <div>
-            <h2 className="text-base font-bold text-gray-900 font-heading tracking-tight">{title}</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Sistema de Gestão de Oficina</p>
+            <h2 className="text-[15px] font-semibold text-gray-900 leading-tight tracking-tight">{title}</h2>
+            <p className="text-[11.5px] text-gray-400 mt-0.5">Sistema de Gestão de Oficina</p>
           </div>
-          <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
-              <Bell size={17} className="text-gray-500" />
+          <div className="flex items-center gap-2">
+            <button className="relative w-8 h-8 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors">
+              <Bell size={16} className="text-gray-500" />
               <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-secondary)' }} />
             </button>
-            <div className="flex items-center gap-3 pl-3 border-l border-gray-200">
+            <div className="flex items-center gap-2.5 pl-3 ml-1 border-l border-gray-200">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold text-gray-800">Administrador</p>
-                <p className="text-xs text-gray-400">admin@oficina.com</p>
+                <p className="text-[13px] font-semibold text-gray-800 leading-tight">Administrador</p>
+                <p className="text-[11px] text-gray-400 leading-tight mt-0.5">admin@oficina.com</p>
               </div>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold"
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[13px] font-bold"
                 style={{ backgroundColor: 'var(--color-primary)' }}>
                 A
               </div>
