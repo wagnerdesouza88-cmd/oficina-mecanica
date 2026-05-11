@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>AutoGest — Gestão Automotiva</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;450;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<link rel="stylesheet" href="styles.css"/>
+
+<link rel="icon" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23635bff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 16a9 9 0 0 1 18 0'/%3E%3Cpath d='m13 10.5-3 5.5'/%3E%3Ccircle cx='12' cy='16' r='1.4' fill='%23635bff'/%3E%3C/svg%3E"/>
+
+<script>
+  // Theme bootstrap (avoid flash)
+  (function () {
+    const saved = localStorage.getItem("autogest-theme");
+    const sysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let t = saved || "system";
+    const resolved = (t === "system") ? (sysDark ? "dark" : "light") : t;
+    document.documentElement.setAttribute("data-theme", resolved);
+  })();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="data.js"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel" src="screens/Dashboard.jsx"></script>
+<script type="text/babel" src="screens/Orders.jsx"></script>
+<script type="text/babel" src="screens/Clients.jsx"></script>
+<script type="text/babel" src="screens/Vehicles.jsx"></script>
+<script type="text/babel" src="screens/Inventory.jsx"></script>
+<script type="text/babel" src="screens/Finance.jsx"></script>
+<script type="text/babel" src="screens/Settings.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+function applyTheme(pref) {
+  const sysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const resolved = (pref === "system") ? (sysDark ? "dark" : "light") : pref;
+  document.documentElement.setAttribute("data-theme", resolved);
+  return resolved;
+}
+
+function App() {
+  const [page, setPage] = useState("dashboard");
+  const [themePref, setThemePref] = useState(() => localStorage.getItem("autogest-theme") || "system");
+  const [resolved, setResolved] = useState(() => applyTheme(localStorage.getItem("autogest-theme") || "system"));
+  const [cmdkOpen, setCmdkOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("autogest-theme", themePref);
+    setResolved(applyTheme(themePref));
+  }, [themePref]);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = () => { if (themePref === "system") setResolved(applyTheme("system")); };
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [themePref]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCmdkOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setThemePref((p) => (resolved === "dark" ? "light" : "dark"));
+  }, [resolved]);
+
+  return (
+    <div className="app">
+      <Sidebar active={page} onNavigate={setPage} theme={resolved} onThemeToggle={toggleTheme}/>
+      <main style={{ minWidth: 0 }}>
+        <Topbar page={page} onOpenCmdK={()=>setCmdkOpen(true)} onThemeToggle={toggleTheme} theme={resolved}/>
+        {page === "dashboard" && <Dashboard onNavigate={setPage}/>}
+        {page === "orders"    && <OrdersScreen/>}
+        {page === "clients"   && <ClientsScreen/>}
+        {page === "vehicles"  && <VehiclesScreen/>}
+        {page === "inventory" && <InventoryScreen/>}
+        {page === "finance"   && <FinanceScreen/>}
+        {page === "settings"  && <SettingsScreen theme={themePref} onThemeChange={setThemePref}/>}
+      </main>
+      {cmdkOpen && <CmdK onClose={()=>setCmdkOpen(false)} onNavigate={setPage}/>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+</body>
+</html>
