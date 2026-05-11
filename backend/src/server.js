@@ -16,7 +16,8 @@ import configuracaoRouter from './routes/configuracao.js'
 const app = express()
 const PORT = process.env.PORT || 3333
 
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }))
+const allowedOrigin = process.env.FRONTEND_URL || /^http:\/\/localhost:\d+$/
+app.use(cors({ origin: allowedOrigin, credentials: true }))
 app.use(express.json())
 
 app.get('/health', (_req, res) => {

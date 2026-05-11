@@ -305,7 +305,7 @@ select option { background-color: var(--bg-elev); color: var(--text); }
   padding: 6px 10px;
   border-radius: var(--r-sm);
   color: var(--sb-text-muted);
-  font-size: 13px; font-weight: 450;
+  font-size: 13px; font-weight: 400;
   width: 100%; text-align: left;
   position: relative;
   transition: color 120ms var(--ease-out), background 120ms var(--ease-out);
