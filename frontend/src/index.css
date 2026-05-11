@@ -110,6 +110,55 @@
   --color-secondary-light:rgba(249,115,22,0.15);
 }
 
+/* ── Tema Claro ────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:           #ffffff;
+  --bg-subtle:    #f6f9fc;
+  --bg-muted:     #eef2f6;
+  --bg-elev:      #ffffff;
+  --bg-hover:     #f6f9fc;
+  --bg-active:    #eef2f6;
+
+  --border:        #e5e9f0;
+  --border-soft:   #eef2f6;
+  --border-strong: #cdd5df;
+
+  --text:         #0a2540;
+  --text-strong:  #06182f;
+  --text-muted:   #425466;
+  --text-soft:    #6b7c93;
+  --text-faint:   #9aa6b8;
+  --text-on-brand:#ffffff;
+
+  --accent:       var(--brand-500);
+  --accent-hover: var(--brand-600);
+  --accent-soft:  var(--brand-50);
+  --accent-soft-2:var(--brand-100);
+  --accent-text:  var(--brand-600);
+
+  --success:      #008060;
+  --success-soft: #ebfaf3;
+  --success-text: #008060;
+
+  --warn:         #c47e0a;
+  --warn-soft:    #fff8e6;
+  --warn-text:    #c47e0a;
+
+  --danger:       #d4351c;
+  --danger-soft:  #fef2f2;
+  --danger-text:  #d4351c;
+
+  --info:         #0570de;
+  --info-soft:    #eff6ff;
+
+  --shadow-xs:  0 1px 2px rgba(10,37,64,0.04);
+  --shadow-sm:  0 1px 3px rgba(10,37,64,0.06), 0 1px 2px rgba(10,37,64,0.04);
+  --shadow-md:  0 4px 12px rgba(10,37,64,0.06), 0 1px 3px rgba(10,37,64,0.04);
+  --shadow-lg:  0 12px 32px rgba(10,37,64,0.08), 0 4px 8px rgba(10,37,64,0.04);
+  --ring:       0 0 0 3px rgba(99,91,255,0.18);
+  --grid-line:  rgba(10,37,64,0.06);
+}
+
 /* ── Base ─────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
@@ -349,6 +398,17 @@ select option { background-color: var(--bg-elev); color: var(--text); }
   font-size: 10.5px; color: var(--sb-text-faint); line-height: 1.2;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.sidebar__theme-btn {
+  width: 28px; height: 28px;
+  border-radius: var(--r-sm);
+  display: grid; place-items: center;
+  color: var(--sb-text-muted);
+  background: var(--sb-bg-elev);
+  border: 1px solid var(--sb-border);
+  cursor: pointer; flex-shrink: 0;
+  transition: background 120ms var(--ease-out), color 120ms var(--ease-out);
+}
+.sidebar__theme-btn:hover { background: var(--sb-hover-bg); color: var(--sb-active-text); }
 
 /* ── Topbar ─────────────────────────────────────────────── */
 .topbar {

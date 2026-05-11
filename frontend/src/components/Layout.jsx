@@ -1,7 +1,9 @@
 import { Outlet, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import {
   LayoutDashboard, Users, Car, ClipboardList,
   DollarSign, Package, Settings, Bell, Search, ChevronDown,
+  Moon, Sun,
 } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 
@@ -66,6 +68,17 @@ export default function Layout() {
   const nomeOficina = config.nomeFantasia || config.nomeEmpresarial || 'Minha Oficina'
   const inicialOficina = nomeOficina.charAt(0).toUpperCase()
 
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark')
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
+  function toggleTheme() {
+    setTheme(t => t === 'dark' ? 'light' : 'dark')
+  }
+
   return (
     <div className="app">
       {/* Sidebar */}
@@ -123,6 +136,9 @@ export default function Layout() {
             <div className="sidebar__user-name">Administrador</div>
             <div className="sidebar__user-mail">admin@oficina.com</div>
           </div>
+          <button className="sidebar__theme-btn" onClick={toggleTheme} title={theme === 'dark' ? 'Modo claro' : 'Modo escuro'}>
+            {theme === 'dark' ? <Sun size={13}/> : <Moon size={13}/>}
+          </button>
         </div>
       </aside>
 
