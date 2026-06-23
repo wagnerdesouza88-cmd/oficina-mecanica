@@ -4,6 +4,173 @@
 // =====================================================
 const { useState: useStateOrders, useRef: useRefOrders, useEffect: useEffectOrders } = React;
 
+function printOS(order) {
+    const v = window.getVehicle(order.vehicleId);
+    const c = window.getClient(order.clientId);
+    const STATUS_LABEL = {
+      open: "Aberta", in_progress: "Em andamento",
+      waiting_part: "Aguardando peça", done: "Concluída", cancelled: "Cancelada"
+    };
+    const services = order.services.map((s, i) => ({
+      name: s, hours: (1 + i * 0.5).toFixed(1), price: 80 + i * 40
+    }));
+    const subtotalServicos = services.reduce((a, b) => a + b.price, 0);
+    const total = order.total;
+
+    const linhasServicos = services.map(s => `
+      <tr>
+        <td>${s.name}</td>
+        <td class="center">${s.hours} h</td>
+        <td class="right">${window.fmtBRL(s.price)}</td>
+      </tr>`).join("");
+
+    const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<title>OS #${order.code} — AutoGest</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #111; background: #fff; padding: 32px; }
+  @page { size: A4; margin: 20mm; }
+  @media print { body { padding: 0; } .no-print { display: none; } }
+
+  /* Header */
+  .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #0a2540; padding-bottom: 16px; margin-bottom: 20px; }
+  .company-name { font-size: 22px; font-weight: 700; color: #0a2540; letter-spacing: -0.5px; }
+  .company-sub  { font-size: 11px; color: #555; margin-top: 2px; }
+  .os-badge { text-align: right; }
+  .os-number { font-size: 20px; font-weight: 700; color: #0a2540; font-family: monospace; }
+  .os-status { display: inline-block; margin-top: 4px; padding: 3px 10px; border-radius: 20px;
+    background: #e8eeff; color: #3730a3; font-size: 11px; font-weight: 600; }
+
+  /* Info grid */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .info-box { border: 1px solid #dde3ec; border-radius: 8px; padding: 12px 14px; }
+  .info-box-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #666; margin-bottom: 8px; }
+  .info-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .info-label { color: #666; }
+  .info-value { font-weight: 600; color: #111; }
+
+  /* Plate */
+  .plate { display: inline-block; background: #f0f4ff; color: #0a2540; font-family: monospace;
+    font-weight: 700; font-size: 13px; letter-spacing: 2px; padding: 3px 10px; border-radius: 6px;
+    border: 1px solid #c7d2fe; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  th { background: #f4f6fa; color: #444; font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 8px 10px; text-align: left; border-bottom: 2px solid #dde3ec; }
+  td { padding: 8px 10px; border-bottom: 1px solid #eef0f5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .center { text-align: center; }
+  .right { text-align: right; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #0a2540; margin-bottom: 8px; padding-bottom: 4px;
+    border-bottom: 1px solid #dde3ec; }
+
+  /* Totals */
+  .totals { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+  .totals-box { width: 260px; border: 1px solid #dde3ec; border-radius: 8px; padding: 12px 14px; }
+  .total-row { display: flex; justify-content: space-between; padding: 4px 0;
+    font-size: 12px; color: #444; }
+  .total-row.grand { border-top: 2px solid #0a2540; margin-top: 6px; padding-top: 8px;
+    font-size: 15px; font-weight: 700; color: #0a2540; }
+
+  /* Signatures */
+  .signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+  .sig-line { border-top: 1px solid #888; padding-top: 6px; text-align: center;
+    font-size: 11px; color: #555; }
+
+  /* Print button */
+  .print-btn { display: block; margin: 24px auto 0; padding: 10px 32px; background: #0a2540;
+    color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
+  .print-btn:hover { background: #1e3a5f; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="company-name">DRIL AUTOCENTER</div>
+    <div class="company-sub">Oficina Mecânica — AutoGest</div>
+    <div class="company-sub" style="margin-top:4px">Tel: (41) 99999-0000 · contato@drilautocenter.com.br</div>
+  </div>
+  <div class="os-badge">
+    <div class="os-number">OS #${order.code}</div>
+    <div class="os-status">${STATUS_LABEL[order.status] || order.status}</div>
+    <div style="font-size:11px;color:#777;margin-top:6px">Emitido em: ${new Date().toLocaleDateString("pt-BR")}</div>
+  </div>
+</div>
+
+<div class="info-grid">
+  <div class="info-box">
+    <div class="info-box-title">👤 Cliente</div>
+    <div class="info-row"><span class="info-label">Nome</span><span class="info-value">${c.name}</span></div>
+    <div class="info-row"><span class="info-label">Telefone</span><span class="info-value">${c.phone}</span></div>
+    <div class="info-row"><span class="info-label">E-mail</span><span class="info-value">${c.email || "—"}</span></div>
+    <div class="info-row"><span class="info-label">CPF</span><span class="info-value">${c.cpf || "—"}</span></div>
+  </div>
+  <div class="info-box">
+    <div class="info-box-title">🚗 Veículo</div>
+    <div class="info-row">
+      <span class="info-label">Placa</span>
+      <span class="plate">${v.plate}</span>
+    </div>
+    <div class="info-row"><span class="info-label">Modelo</span><span class="info-value">${v.brand} ${v.model}</span></div>
+    <div class="info-row"><span class="info-label">Ano</span><span class="info-value">${v.year}</span></div>
+    <div class="info-row"><span class="info-label">Cor</span><span class="info-value">${v.color || "—"}</span></div>
+  </div>
+</div>
+
+<div class="info-grid" style="margin-bottom:20px">
+  <div class="info-box">
+    <div class="info-box-title">📋 Informações da OS</div>
+    <div class="info-row"><span class="info-label">Entrada</span><span class="info-value">${order.entry}</span></div>
+    <div class="info-row"><span class="info-label">Previsão</span><span class="info-value">${order.forecast}</span></div>
+    <div class="info-row"><span class="info-label">Entrega</span><span class="info-value">${order.delivery !== "—" ? order.delivery : "Em aberto"}</span></div>
+    <div class="info-row"><span class="info-label">Mecânico</span><span class="info-value">${order.mechanic}</span></div>
+  </div>
+</div>
+
+<div class="section-title">Serviços Executados</div>
+<table>
+  <thead>
+    <tr>
+      <th>Descrição do Serviço</th>
+      <th class="center" style="width:80px">Horas</th>
+      <th class="right" style="width:110px">Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${linhasServicos}
+  </tbody>
+</table>
+
+<div class="totals">
+  <div class="totals-box">
+    <div class="total-row"><span>Subtotal serviços</span><span>${window.fmtBRL(subtotalServicos)}</span></div>
+    <div class="total-row"><span>Peças / materiais</span><span>${window.fmtBRL(0)}</span></div>
+    <div class="total-row"><span>Desconto</span><span>− ${window.fmtBRL(0)}</span></div>
+    <div class="total-row grand"><span>TOTAL</span><span>${window.fmtBRL(total)}</span></div>
+  </div>
+</div>
+
+<div class="signatures">
+  <div class="sig-line">Assinatura do Cliente</div>
+  <div class="sig-line">Assinatura do Responsável Técnico</div>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Imprimir / Salvar PDF</button>
+
+</body></html>`;
+
+    const win = window.open("", "_blank");
+    win.document.write(html);
+    win.document.close();
+}
+
 function OrdersScreen() {
   const D = window.MOCK_DATA;
   const [filter, setFilter] = useStateOrders("all");
@@ -11,7 +178,7 @@ function OrdersScreen() {
   const [selectedId, setSelectedId] = useStateOrders(null);
   const [showNew, setShowNew] = useStateOrders(false);
   const [editOrder, setEditOrder] = useStateOrders(null);
-  const [menuAnchor, setMenuAnchor] = useStateOrders(null); // { order, x, y }
+  const [menuAnchor, setMenuAnchor] = useStateOrders(null);
 
   const counts = {
     all: D.orders.length,
@@ -147,7 +314,7 @@ function OrdersScreen() {
                     <td className="num" onClick={(e)=>e.stopPropagation()}>
                       <div className="actions">
                         <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir OS"
-                          onClick={(e)=>{ e.stopPropagation(); window.print(); }}>
+                          onClick={(e)=>{ e.stopPropagation(); printOS(o); }}>
                           <Icons.Print size={14}/>
                         </button>
                         <button className="btn btn--ghost btn--icon btn--sm" title="Editar OS"
@@ -233,7 +400,7 @@ function OrderDetailModal({ order, onClose }) {
       width={920}
       footer={
         <>
-          <button className="btn btn--ghost" onClick={()=>{window.print();}}><Icons.Print size={14}/> Imprimir</button>
+          <button className="btn btn--ghost" onClick={()=>printOS(order)}><Icons.Print size={14}/> Imprimir OS</button>
           <span style={{ flex: 1 }}></span>
           <button className="btn btn--secondary" onClick={onClose}>Fechar</button>
           <button className="btn btn--primary"><Icons.Check size={14}/> Marcar concluída</button>
@@ -456,7 +623,7 @@ function OrderDropdown({ order, x, y, onEdit, onView, onClose }) {
     }}>
       {row("Ver detalhes",    <Icons.Clipboard size={13}/>, onView)}
       {row("Editar OS",       <Icons.Edit size={13}/>,      onEdit)}
-      {row("Imprimir OS",     <Icons.Print size={13}/>,     ()=>window.print())}
+      {row("Imprimir OS",     <Icons.Print size={13}/>,     ()=>printOS(order))}
       {row("Duplicar OS",     <Icons.Plus size={13}/>,      ()=>alert("OS duplicada!"))}
       <div style={{ height:1,background:"var(--border)",margin:"4px 0" }}/>
       {row("Cancelar OS",     <Icons.X size={13}/>,
