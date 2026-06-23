@@ -8,6 +8,7 @@ function InventoryScreen() {
   const D = window.MOCK_DATA;
   const [q, setQ] = useStateInv("");
   const [cat, setCat] = useStateInv("all");
+  const [showNew, setShowNew] = useStateInv(false);
 
   const cats = useMemoInv(() => ["all", ...Array.from(new Set(D.inventory.map(i => i.category)))], []);
   const filtered = D.inventory.filter(i => {
@@ -41,8 +42,8 @@ function InventoryScreen() {
             <span className="input-group__icon"><Icons.Search size={14}/></span>
             <input className="input" placeholder="SKU, nome, marca…" value={q} onChange={(e)=>setQ(e.target.value)}/>
           </div>
-          <button className="btn btn--secondary" onClick={()=>{alert("Importar: Selecione um arquivo CSV ou Excel para importar estoque")}}><Icons.ArrowDownRight size={14}/> Importar</button>
-          <button className="btn btn--primary" onClick={()=>{alert("Criando novo item no estoque...")}}><Icons.Plus size={14}/> Novo Item</button>
+          <button className="btn btn--secondary" onClick={()=>{alert("Importar: Selecione um arquivo CSV ou Excel")}}><Icons.ArrowDownRight size={14}/> Importar</button>
+          <button className="btn btn--primary" onClick={()=>setShowNew(true)}><Icons.Plus size={14}/> Novo Item</button>
         </div>
       </div>
 
@@ -135,6 +136,8 @@ function InventoryScreen() {
           </table>
         </div>
       </div>
+
+      {showNew && <NewInventoryModal onClose={()=>setShowNew(false)}/>}
     </div>
   );
 }
@@ -157,6 +160,63 @@ function MetricCard({ label, value, icon, tone, hint }) {
       <div style={{ fontSize: 24, fontWeight: 600, color: "var(--text-strong)", letterSpacing: "-0.02em", lineHeight: 1.1, fontFamily: "var(--font-display)" }}>{value}</div>
       {hint && <div style={{ fontSize: 11.5, color: "var(--text-soft)", marginTop: 4 }}>{hint}</div>}
     </div>
+  );
+}
+
+function NewInventoryModal({ onClose }) {
+  return (
+    <Modal title="Novo Item de Estoque"
+           sub="Cadastre um novo produto ou peça"
+           onClose={onClose}
+           width={680}
+           footer={<>
+             <button className="btn btn--ghost" onClick={onClose}>Cancelar</button>
+             <button className="btn btn--primary"><Icons.Check size={14}/> Cadastrar item</button>
+           </>}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        <div className="field">
+          <label className="field__label">SKU</label>
+          <input className="input" placeholder="OL-5W30-LT"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Categoria</label>
+          <select className="select">
+            <option>Lubrificante</option>
+            <option>Filtro</option>
+            <option>Freios</option>
+            <option>Elétrica</option>
+            <option>Ignição</option>
+            <option>Acessório</option>
+            <option>Suspensão</option>
+            <option>Motor</option>
+          </select>
+        </div>
+        <div className="field" style={{ gridColumn: "1 / -1" }}>
+          <label className="field__label">Nome do produto</label>
+          <input className="input" placeholder="Óleo Sintético 5W30"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Marca</label>
+          <input className="input" placeholder="Mobil"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Fornecedor</label>
+          <input className="input" placeholder="Distribuidora XYZ"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Estoque mínimo</label>
+          <input className="input" type="number" defaultValue="10"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Custo unitário</label>
+          <input className="input" placeholder="R$ 0,00"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Preço de venda</label>
+          <input className="input" placeholder="R$ 0,00"/>
+        </div>
+      </div>
+    </Modal>
   );
 }
 

@@ -1,4 +1,4 @@
-/* global React, Icons, Sparkline */
+/* global React, Icons, Sparkline, Modal */
 // =====================================================
 // AutoGest — Financeiro
 // =====================================================
@@ -7,6 +7,7 @@ const { useState: useStateFin } = React;
 function FinanceScreen() {
   const D = window.MOCK_DATA;
   const [tab, setTab] = useStateFin("all");
+  const [showNew, setShowNew] = useStateFin(false);
 
   const totalIn  = D.finance.filter(f => f.type === "in").reduce((s,f) => s + f.amount, 0);
   const totalOut = D.finance.filter(f => f.type === "out").reduce((s,f) => s + f.amount, 0);
@@ -29,8 +30,8 @@ function FinanceScreen() {
         </div>
         <div className="page__actions">
           <button className="btn btn--secondary"><Icons.Calendar size={14}/> Maio 2026</button>
-          <button className="btn btn--secondary" onClick={()=>alert("Exportando relatório financeiro...")}><Icons.ArrowDownRight size={14}/> Exportar</button>
-          <button className="btn btn--primary" onClick={()=>alert("Criando nova movimentação financeira...")}><Icons.Plus size={14}/> Nova movimentação</button>
+          <button className="btn btn--secondary" onClick={()=>{alert("Exportando relatório financeiro...")}}><Icons.ArrowDownRight size={14}/> Exportar</button>
+          <button className="btn btn--primary" onClick={()=>setShowNew(true)}><Icons.Plus size={14}/> Nova movimentação</button>
         </div>
       </div>
 
@@ -123,8 +124,8 @@ function FinanceScreen() {
                     </td>
                     <td className="num">
                       <div className="actions">
-                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>alert("Editando movimentação: " + f.desc)}><Icons.Edit size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>alert("Mais opções para: " + f.desc)}><Icons.More size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>{alert("Editando: " + f.desc)}}><Icons.Edit size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>{alert("Mais opções para: " + f.desc)}}><Icons.More size={14}/></button>
                       </div>
                     </td>
                   </tr>
@@ -134,6 +135,8 @@ function FinanceScreen() {
           </table>
         </div>
       </div>
+
+      {showNew && <NewFinanceModal onClose={()=>setShowNew(false)}/>}
     </div>
   );
 }
@@ -164,6 +167,68 @@ function BigStat({ icon, tone, label, value, delta, deltaDown, deltaNeutral, spa
         {spark && <Sparkline data={spark} color={line} width={64} height={20}/>}
       </div>
     </div>
+  );
+}
+
+function NewFinanceModal({ onClose }) {
+  return (
+    <Modal title="Nova Movimentação Financeira"
+           sub="Registre entradas, saídas e despesas"
+           onClose={onClose}
+           width={680}
+           footer={<>
+             <button className="btn btn--ghost" onClick={onClose}>Cancelar</button>
+             <button className="btn btn--primary"><Icons.Check size={14}/> Registrar movimentação</button>
+           </>}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        <div className="field">
+          <label className="field__label">Tipo</label>
+          <select className="select" defaultValue="in">
+            <option value="in">Entrada (Recebimento)</option>
+            <option value="out">Saída (Despesa)</option>
+          </select>
+        </div>
+        <div className="field">
+          <label className="field__label">Data</label>
+          <input className="input" type="text" defaultValue="08/05/2026"/>
+        </div>
+        <div className="field">
+          <label className="field__label">Categoria</label>
+          <select className="select">
+            <option>Serviço</option>
+            <option>Estoque</option>
+            <option>Fixo</option>
+            <option>Folha</option>
+          </select>
+        </div>
+        <div className="field">
+          <label className="field__label">Forma de pagamento</label>
+          <select className="select">
+            <option>PIX</option>
+            <option>Cartão</option>
+            <option>Boleto</option>
+            <option>Transferência</option>
+            <option>Débito</option>
+          </select>
+        </div>
+        <div className="field" style={{ gridColumn: "1 / -1" }}>
+          <label className="field__label">Descrição</label>
+          <input className="input" placeholder="Ex: OS #QYP5NA - Corrente do comando"/>
+        </div>
+        <div className="field" style={{ gridColumn: "1 / -1" }}>
+          <label className="field__label">Valor</label>
+          <input className="input" placeholder="R$ 0,00" type="text"/>
+        </div>
+        <div className="field" style={{ gridColumn: "1 / -1" }}>
+          <label className="field__label">Status</label>
+          <select className="select">
+            <option>Recebido/Pago</option>
+            <option>Pendente</option>
+            <option>Agendado</option>
+          </select>
+        </div>
+      </div>
+    </Modal>
   );
 }
 
