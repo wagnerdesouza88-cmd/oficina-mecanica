@@ -9,7 +9,7 @@ function FinanceScreen() {
   const [tab, setTab] = useStateFin("all");
   const [showNew, setShowNew] = useStateFin(false);
   const [editItem, setEditItem] = useStateFin(null);
-  const [menuId, setMenuId] = useStateFin(null);
+  const [menuAnchor, setMenuAnchor] = useStateFin(null); // { item, x, y }
 
   const totalIn  = D.finance.filter(f => f.type === "in").reduce((s,f) => s + f.amount, 0);
   const totalOut = D.finance.filter(f => f.type === "out").reduce((s,f) => s + f.amount, 0);
@@ -136,26 +136,23 @@ function FinanceScreen() {
                       </span>
                     </td>
                     <td className="num">
-                      <div className="actions" style={{ position:"relative" }}>
+                      <div className="actions">
                         <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir"
                           onClick={()=>handlePrint(f)}>
                           <Icons.Print size={14}/>
                         </button>
                         <button className="btn btn--ghost btn--icon btn--sm" title="Editar"
-                          onClick={()=>{ setMenuId(null); setEditItem(f); }}>
+                          onClick={()=>{ setMenuAnchor(null); setEditItem(f); }}>
                           <Icons.Edit size={14}/>
                         </button>
                         <button className="btn btn--ghost btn--icon btn--sm" title="Mais opções"
-                          onClick={(e)=>{ e.stopPropagation(); setMenuId(menuId===f.id?null:f.id); }}>
+                          onClick={(e)=>{
+                            e.stopPropagation();
+                            const r = e.currentTarget.getBoundingClientRect();
+                            setMenuAnchor(menuAnchor?.item?.id===f.id ? null : { item:f, x:r.right, y:r.bottom+4 });
+                          }}>
                           <Icons.More size={14}/>
                         </button>
-                        {menuId === f.id && (
-                          <FinDropdown
-                            item={f}
-                            onEdit={()=>{ setMenuId(null); setEditItem(f); }}
-                            onClose={()=>setMenuId(null)}
-                          />
-                        )}
                       </div>
                     </td>
                   </tr>
@@ -166,28 +163,37 @@ function FinanceScreen() {
         </div>
       </div>
 
-      {showNew  && <NewFinanceModal  onClose={()=>setShowNew(false)}/>}
-      {editItem && <EditFinanceModal item={editItem} onClose={()=>setEditItem(null)}/>}
+      {showNew    && <NewFinanceModal  onClose={()=>setShowNew(false)}/>}
+      {editItem   && <EditFinanceModal item={editItem} onClose={()=>setEditItem(null)}/>}
+      {menuAnchor && (
+        <FinDropdown
+          item={menuAnchor.item}
+          x={menuAnchor.x}
+          y={menuAnchor.y}
+          onEdit={()=>{ setMenuAnchor(null); setEditItem(menuAnchor.item); }}
+          onClose={()=>setMenuAnchor(null)}
+        />
+      )}
     </div>
   );
 }
 
-/* ---------- Dropdown three-dots ---------- */
-function FinDropdown({ item, onEdit, onClose }) {
+/* ---------- Dropdown three-dots (position:fixed para escapar do overflow) ---------- */
+function FinDropdown({ item, x, y, onEdit, onClose }) {
   const ref = useRefFin(null);
   useEffectFin(() => {
-    function onClick(e) { if (ref.current && !ref.current.contains(e.target)) onClose(); }
-    function onKey(e)   { if (e.key === "Escape") onClose(); }
-    document.addEventListener("mousedown", onClick);
+    function onClickOut(e) { if (ref.current && !ref.current.contains(e.target)) onClose(); }
+    function onKey(e)      { if (e.key === "Escape") onClose(); }
+    document.addEventListener("mousedown", onClickOut);
     document.addEventListener("keydown",   onKey);
     return () => {
-      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("mousedown", onClickOut);
       document.removeEventListener("keydown",   onKey);
     };
   }, [onClose]);
 
-  const row = (label, icon, onClick, danger) => (
-    <button onClick={()=>{ onClick(); onClose(); }} style={{
+  const row = (label, icon, handler, danger) => (
+    <button onClick={()=>{ handler(); onClose(); }} style={{
       display:"flex",alignItems:"center",gap:8,width:"100%",padding:"7px 12px",
       background:"none",border:"none",cursor:"pointer",fontSize:13,textAlign:"left",
       color: danger ? "var(--danger)" : "var(--text)",
@@ -200,12 +206,12 @@ function FinDropdown({ item, onEdit, onClose }) {
 
   return (
     <div ref={ref} style={{
-      position:"absolute",right:0,top:"100%",zIndex:200,
+      position:"fixed", right: window.innerWidth - x, top: y, zIndex:9999,
       background:"var(--bg-elev)",border:"1px solid var(--border)",
-      borderRadius:8,boxShadow:"0 8px 24px rgba(0,0,0,0.18)",
-      minWidth:170,padding:"4px 0",marginTop:4,
+      borderRadius:8,boxShadow:"0 8px 24px rgba(0,0,0,0.22)",
+      minWidth:180,padding:"4px 0",
     }}>
-      {row("Editar", <Icons.Edit size={13}/>, onEdit)}
+      {row("Editar movimentação", <Icons.Edit size={13}/>, onEdit)}
       {row("Duplicar lançamento", <Icons.Plus size={13}/>, ()=>alert("Duplicando: "+item.desc))}
       <div style={{ height:1,background:"var(--border)",margin:"4px 0" }}/>
       {row("Excluir", <Icons.X size={13}/>, ()=>{ if(confirm("Excluir este lançamento?")) alert("Excluído."); }, true)}

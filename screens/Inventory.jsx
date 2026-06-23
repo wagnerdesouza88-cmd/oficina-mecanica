@@ -11,7 +11,7 @@ function InventoryScreen() {
   const [showNew, setShowNew] = useStateInv(false);
   const [editItem, setEditItem] = useStateInv(null);
   const [adjustItem, setAdjustItem] = useStateInv(null);
-  const [menuId, setMenuId] = useStateInv(null);
+  const [menuAnchor, setMenuAnchor] = useStateInv(null); // { item, x, y }
 
   const cats = useMemoInv(() => ["all", ...Array.from(new Set(D.inventory.map(i => i.category)))], []);
   const filtered = D.inventory.filter(i => {
@@ -165,21 +165,17 @@ function InventoryScreen() {
                           <Icons.Print size={14}/>
                         </button>
                         <button className="btn btn--ghost btn--icon btn--sm" title="Editar"
-                          onClick={()=>{ setMenuId(null); setEditItem(i); }}>
+                          onClick={()=>{ setMenuAnchor(null); setEditItem(i); }}>
                           <Icons.Edit size={14}/>
                         </button>
                         <button className="btn btn--ghost btn--icon btn--sm" title="Mais opções"
-                          onClick={(e)=>{ e.stopPropagation(); setMenuId(menuId===i.id?null:i.id); }}>
+                          onClick={(e)=>{
+                            e.stopPropagation();
+                            const r = e.currentTarget.getBoundingClientRect();
+                            setMenuAnchor(menuAnchor?.item?.id===i.id ? null : { item:i, x:r.right, y:r.bottom+4 });
+                          }}>
                           <Icons.More size={14}/>
                         </button>
-                        {menuId === i.id && (
-                          <InvDropdown
-                            item={i}
-                            onEdit={()=>{ setMenuId(null); setEditItem(i); }}
-                            onAdjust={()=>{ setMenuId(null); setAdjustItem(i); }}
-                            onClose={()=>setMenuId(null)}
-                          />
-                        )}
                       </div>
                     </td>
                   </tr>
@@ -193,26 +189,36 @@ function InventoryScreen() {
       {showNew    && <NewInventoryModal   onClose={()=>setShowNew(false)}/>}
       {editItem   && <EditInventoryModal  item={editItem}   onClose={()=>setEditItem(null)}/>}
       {adjustItem && <AdjustStockModal    item={adjustItem} onClose={()=>setAdjustItem(null)}/>}
+      {menuAnchor && (
+        <InvDropdown
+          item={menuAnchor.item}
+          x={menuAnchor.x}
+          y={menuAnchor.y}
+          onEdit={()=>{ setMenuAnchor(null); setEditItem(menuAnchor.item); }}
+          onAdjust={()=>{ setMenuAnchor(null); setAdjustItem(menuAnchor.item); }}
+          onClose={()=>setMenuAnchor(null)}
+        />
+      )}
     </div>
   );
 }
 
-/* ---------- Dropdown three-dots ---------- */
-function InvDropdown({ item, onEdit, onAdjust, onClose }) {
+/* ---------- Dropdown three-dots (position:fixed para escapar do overflow) ---------- */
+function InvDropdown({ item, x, y, onEdit, onAdjust, onClose }) {
   const ref = useRefInv(null);
   useEffectInv(() => {
-    function onClick(e) { if (ref.current && !ref.current.contains(e.target)) onClose(); }
-    function onKey(e)   { if (e.key === "Escape") onClose(); }
-    document.addEventListener("mousedown", onClick);
+    function onClickOut(e) { if (ref.current && !ref.current.contains(e.target)) onClose(); }
+    function onKey(e)      { if (e.key === "Escape") onClose(); }
+    document.addEventListener("mousedown", onClickOut);
     document.addEventListener("keydown",   onKey);
     return () => {
-      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("mousedown", onClickOut);
       document.removeEventListener("keydown",   onKey);
     };
   }, [onClose]);
 
-  const row = (label, icon, onClick, danger) => (
-    <button onClick={()=>{ onClick(); onClose(); }} style={{
+  const row = (label, icon, handler, danger) => (
+    <button onClick={()=>{ handler(); onClose(); }} style={{
       display:"flex",alignItems:"center",gap:8,width:"100%",padding:"7px 12px",
       background:"none",border:"none",cursor:"pointer",fontSize:13,textAlign:"left",
       color: danger ? "var(--danger)" : "var(--text)",
@@ -225,14 +231,14 @@ function InvDropdown({ item, onEdit, onAdjust, onClose }) {
 
   return (
     <div ref={ref} style={{
-      position:"absolute",right:0,top:"100%",zIndex:200,
+      position:"fixed", right: window.innerWidth - x, top: y, zIndex:9999,
       background:"var(--bg-elev)",border:"1px solid var(--border)",
-      borderRadius:8,boxShadow:"0 8px 24px rgba(0,0,0,0.18)",
-      minWidth:180,padding:"4px 0",marginTop:4,
+      borderRadius:8,boxShadow:"0 8px 24px rgba(0,0,0,0.22)",
+      minWidth:190,padding:"4px 0",
     }}>
-      {row("Editar produto", <Icons.Edit size={13}/>, onEdit)}
+      {row("Editar produto",  <Icons.Edit size={13}/>,    onEdit)}
       {row("Ajustar estoque", <Icons.Package size={13}/>, onAdjust)}
-      {row("Imprimir ficha", <Icons.Print size={13}/>, ()=>{})}
+      {row("Imprimir ficha",  <Icons.Print size={13}/>,   ()=>{})}
       <div style={{ height:1,background:"var(--border)",margin:"4px 0" }}/>
       {row("Excluir produto", <Icons.X size={13}/>, ()=>{ if(confirm("Excluir "+item.name+"?")) alert("Produto excluído."); }, true)}
     </div>
