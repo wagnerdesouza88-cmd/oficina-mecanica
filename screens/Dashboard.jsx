@@ -176,7 +176,7 @@ function Kpi({ label, value, delta, foot, spark, color, icon }) {
         color: color,
       }}><Ic size={16}/></div>
       <div className="kpi__label">{label}</div>
-      <div className="kpi__value">{value}</div>
+      <div className="kpi__value" style={{ fontSize: 28, fontWeight: 700, lineHeight: 1.2 }}>{value}</div>
       <div className="kpi__foot">
         {delta && (
           <span className={"delta delta--" + delta.kind}>

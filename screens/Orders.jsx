@@ -43,8 +43,8 @@ function OrdersScreen() {
             <span className="input-group__icon"><Icons.Search size={14}/></span>
             <input className="input" placeholder="Buscar por OS, placa, cliente…" value={q} onChange={(e)=>setQ(e.target.value)}/>
           </div>
-          <button className="btn btn--secondary"><Icons.Filter size={14}/> Filtros</button>
-          <button className="btn btn--secondary"><Icons.ArrowDownRight size={14}/> Exportar</button>
+          <button className="btn btn--secondary" onClick={()=>alert("Filtros: Em breve")}><Icons.Filter size={14}/> Filtros</button>
+          <button className="btn btn--secondary" onClick={()=>alert("Exportar: Gerando PDF...")}><Icons.ArrowDownRight size={14}/> Exportar</button>
           <button className="btn btn--primary" onClick={()=>setShowNew(true)}><Icons.Plus size={14}/> Nova Ordem</button>
         </div>
       </div>
@@ -101,7 +101,7 @@ function OrdersScreen() {
                       <div className="cell-avatar">
                         <Avatar name={c.name} size={28}/>
                         <div className="cell-stack">
-                          <span style={{ fontWeight: 500 }}>{c.name.split(" ").slice(0,2).join(" ")}</span>
+                          <span style={{ fontWeight: 500 }}>{window.abbreviateName(c.name)}</span>
                           <span className="cell-stack-sub">{c.phone}</span>
                         </div>
                       </div>
@@ -144,9 +144,9 @@ function OrdersScreen() {
                     </td>
                     <td className="num" onClick={(e)=>e.stopPropagation()}>
                       <div className="actions">
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir"><Icons.Print size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Editar"><Icons.Edit size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Mais"><Icons.More size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir" onClick={()=>alert("Imprimindo OS #" + o.code)}><Icons.Print size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Editar" onClick={()=>alert("Editando OS #" + o.code)}><Icons.Edit size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Mais" onClick={()=>alert("Mais opções para OS #" + o.code)}><Icons.More size={14}/></button>
                       </div>
                     </td>
                   </tr>

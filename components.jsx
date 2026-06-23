@@ -106,7 +106,7 @@ function Topbar({ page, onOpenCmdK, onThemeToggle, theme }) {
         <span style={{ flex: 1, textAlign: "left" }}>Buscar OS, cliente, veículo, peça…</span>
         <kbd>⌘K</kbd>
       </button>
-      <button className="topbar__icon-btn" title="Notificações">
+      <button className="topbar__icon-btn" title="Notificações" onClick={()=>alert("Você tem 3 notificações:\n\n• OS #QYPLW concluída\n• Estoque baixo: Filtro de Ar\n• Pagamento recebido: R$ 2.720,00")}>
         <Icons.Bell size={16}/>
         <span className="dot"></span>
       </button>

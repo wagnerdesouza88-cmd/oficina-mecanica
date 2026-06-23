@@ -191,6 +191,13 @@ const avatarBg = (name) => {
   return AVATAR_PALETTE[h % AVATAR_PALETTE.length];
 };
 
+const abbreviateName = (fullName) => {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0];
+  if (parts.length === 2) return parts.join(" ");
+  return parts[0] + " " + parts[parts.length - 1];
+};
+
 window.MOCK_DATA = MOCK_DATA;
 window.STATUS_META = STATUS_META;
 window.FINANCE_STATUS_META = FINANCE_STATUS_META;
@@ -200,3 +207,4 @@ window.initials = initials;
 window.getClient = getClient;
 window.getVehicle = getVehicle;
 window.avatarBg = avatarBg;
+window.abbreviateName = abbreviateName;

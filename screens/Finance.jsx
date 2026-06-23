@@ -29,8 +29,8 @@ function FinanceScreen() {
         </div>
         <div className="page__actions">
           <button className="btn btn--secondary"><Icons.Calendar size={14}/> Maio 2026</button>
-          <button className="btn btn--secondary"><Icons.ArrowDownRight size={14}/> Exportar</button>
-          <button className="btn btn--primary"><Icons.Plus size={14}/> Nova movimentação</button>
+          <button className="btn btn--secondary" onClick={()=>alert("Exportando relatório financeiro...")}><Icons.ArrowDownRight size={14}/> Exportar</button>
+          <button className="btn btn--primary" onClick={()=>alert("Criando nova movimentação financeira...")}><Icons.Plus size={14}/> Nova movimentação</button>
         </div>
       </div>
 
@@ -123,8 +123,8 @@ function FinanceScreen() {
                     </td>
                     <td className="num">
                       <div className="actions">
-                        <button className="btn btn--ghost btn--icon btn--sm"><Icons.Edit size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm"><Icons.More size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>alert("Editando movimentação: " + f.desc)}><Icons.Edit size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>alert("Mais opções para: " + f.desc)}><Icons.More size={14}/></button>
                       </div>
                     </td>
                   </tr>
