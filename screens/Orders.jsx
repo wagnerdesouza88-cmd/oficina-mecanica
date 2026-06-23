@@ -43,8 +43,8 @@ function OrdersScreen() {
             <span className="input-group__icon"><Icons.Search size={14}/></span>
             <input className="input" placeholder="Buscar por OS, placa, cliente…" value={q} onChange={(e)=>setQ(e.target.value)}/>
           </div>
-          <button className="btn btn--secondary" onClick={()=>alert("Filtros: Em breve")}><Icons.Filter size={14}/> Filtros</button>
-          <button className="btn btn--secondary" onClick={()=>alert("Exportar: Gerando PDF...")}><Icons.ArrowDownRight size={14}/> Exportar</button>
+          <button className="btn btn--secondary" onClick={()=>{alert("Filtros\\n\\nEm breve")}}><Icons.Filter size={14}/> Filtros</button>
+          <button className="btn btn--secondary" onClick={()=>{alert("Exportando PDF das ordens...")}}><Icons.ArrowDownRight size={14}/> Exportar</button>
           <button className="btn btn--primary" onClick={()=>setShowNew(true)}><Icons.Plus size={14}/> Nova Ordem</button>
         </div>
       </div>
@@ -144,9 +144,9 @@ function OrdersScreen() {
                     </td>
                     <td className="num" onClick={(e)=>e.stopPropagation()}>
                       <div className="actions">
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir" onClick={()=>alert("Imprimindo OS #" + o.code)}><Icons.Print size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Editar" onClick={()=>alert("Editando OS #" + o.code)}><Icons.Edit size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Mais" onClick={()=>alert("Mais opções para OS #" + o.code)}><Icons.More size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir" onClick={()=>{window.print();}}><Icons.Print size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Editar" onClick={()=>{alert("Editando OS #" + o.code);}}><Icons.Edit size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Mais" onClick={()=>{alert("Mais opções:\\n✓ Duplicar OS\\n✓ Cancelar\\n✓ Arquivar\\n✓ Exportar PDF");}}><Icons.More size={14}/></button>
                       </div>
                     </td>
                   </tr>
@@ -207,7 +207,7 @@ function OrderDetailModal({ order, onClose }) {
       width={920}
       footer={
         <>
-          <button className="btn btn--ghost"><Icons.Print size={14}/> Imprimir</button>
+          <button className="btn btn--ghost" onClick={()=>{window.print();}}><Icons.Print size={14}/> Imprimir</button>
           <span style={{ flex: 1 }}></span>
           <button className="btn btn--secondary" onClick={onClose}>Fechar</button>
           <button className="btn btn--primary"><Icons.Check size={14}/> Marcar concluída</button>

@@ -41,8 +41,8 @@ function InventoryScreen() {
             <span className="input-group__icon"><Icons.Search size={14}/></span>
             <input className="input" placeholder="SKU, nome, marca…" value={q} onChange={(e)=>setQ(e.target.value)}/>
           </div>
-          <button className="btn btn--secondary" onClick={()=>alert("Importar estoque: Selecione um arquivo CSV ou Excel")}><Icons.ArrowDownRight size={14}/> Importar</button>
-          <button className="btn btn--primary" onClick={()=>alert("Criando novo item no estoque...")}><Icons.Plus size={14}/> Novo Item</button>
+          <button className="btn btn--secondary" onClick={()=>{alert("Importar: Selecione um arquivo CSV ou Excel para importar estoque")}}><Icons.ArrowDownRight size={14}/> Importar</button>
+          <button className="btn btn--primary" onClick={()=>{alert("Criando novo item no estoque...")}}><Icons.Plus size={14}/> Novo Item</button>
         </div>
       </div>
 
@@ -124,8 +124,8 @@ function InventoryScreen() {
                     </td>
                     <td className="num">
                       <div className="actions">
-                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>alert("Editando item: " + i.name)}><Icons.Edit size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>alert("Mais opções para: " + i.name)}><Icons.More size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>{alert("Editando: " + i.name)}}><Icons.Edit size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" onClick={()=>{alert("Mais opções para: " + i.name)}}><Icons.More size={14}/></button>
                       </div>
                     </td>
                   </tr>
