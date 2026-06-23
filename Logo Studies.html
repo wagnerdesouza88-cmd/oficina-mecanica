@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>AutoGest — Logo Studies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0a2540;
+    --ink-2: #06182f;
+    --soft: #425466;
+    --faint: #9aa6b8;
+    --line: #e5e9f0;
+    --line-soft: #eef2f6;
+    --bg: #f6f9fc;
+    --card: #ffffff;
+    --indigo: #635bff;
+    --indigo-deep: #4339c9;
+    --indigo-dark: #2a228f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .container { max-width: 1240px; margin: 0 auto; padding: 56px 32px 96px; }
+  .hdr { margin-bottom: 40px; }
+  .hdr h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.025em; margin: 0 0 6px; color: var(--ink-2); }
+  .hdr p { color: var(--soft); font-size: 14.5px; max-width: 620px; margin: 0; }
+  .hdr .kicker {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--indigo); font-weight: 600; margin-bottom: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .hdr .kicker::before {
+    content: ""; width: 18px; height: 1px; background: var(--indigo);
+  }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .study {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(10,37,64,0.04);
+  }
+  .study__hero {
+    height: 220px;
+    display: grid; place-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .study__hero--light { background: #fafbfc; }
+  .study__hero--dark  { background: #0a0d1f; color: #fff; }
+  .study__split { display: grid; grid-template-columns: 1fr 1fr; }
+
+  .study__meta {
+    padding: 20px 22px 18px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .study__name {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--faint); font-weight: 600;
+  }
+  .study__title {
+    font-size: 17px; font-weight: 600; letter-spacing: -0.015em;
+    margin: 2px 0 6px; color: var(--ink-2);
+  }
+  .study__desc { font-size: 13px; color: var(--soft); line-height: 1.55; }
+
+  .study__details {
+    display: flex; gap: 28px; padding: 14px 22px 20px;
+    border-top: 1px solid var(--line-soft);
+    background: #fafbfc;
+    align-items: center;
+  }
+  .study__detail-label {
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint); font-weight: 600; margin-bottom: 8px;
+  }
+  .scale {
+    display: flex; align-items: center; gap: 14px;
+  }
+
+  /* Lockup typography */
+  .lockup { display: inline-flex; align-items: center; gap: 12px; }
+  .lockup__type { font-size: 26px; font-weight: 600; letter-spacing: -0.025em; }
+  .lockup__sub  { font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); font-weight: 600; line-height: 1; margin-top: 3px; display: block; }
+  .study__hero--dark .lockup__sub { color: rgba(255,255,255,0.4); }
+
+  /* Footer */
+  .foot {
+    margin-top: 36px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex; gap: 18px; align-items: center;
+  }
+  .foot p { margin: 0; font-size: 13.5px; color: var(--soft); }
+  .foot strong { color: var(--ink-2); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hdr">
+    <div class="kicker">Logo Studies · AutoGest</div>
+    <h1>Quatro direções para a marca</h1>
+    <p>Cada opção exibe o lockup horizontal em fundo claro e o símbolo isolado em fundo escuro. Me diga qual ressoa e eu aplico em todo o sistema (sidebar, favicon, splash, documentos impressos).</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ========== OPTION A — APEX ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <!-- Apex mark: triangular tachometer with rising needle = A -->
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <defs>
+                <linearGradient id="gA1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7a72ff"/>
+                  <stop offset="100%" stop-color="#4339c9"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="44" height="44" rx="11" fill="url(#gA1)"/>
+              <rect x="2" y="2" width="44" height="44" rx="11" fill="none" stroke="rgba(255,255,255,0.18)"/>
+              <!-- Negative-space A formed by needle + crossbar -->
+              <path d="M14 34 L24 14 L34 34" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M19 26 L29 26" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity="0.6"/>
+              <circle cx="24" cy="14" r="2" fill="#fff"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <rect x="2" y="2" width="44" height="44" rx="11" fill="#11152b" stroke="rgba(255,255,255,0.08)"/>
+            <path d="M14 34 L24 14 L34 34" stroke="#8b85ff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M19 26 L29 26" stroke="#8b85ff" stroke-width="2.4" stroke-linecap="round" opacity="0.45"/>
+            <circle cx="24" cy="14" r="2" fill="#8b85ff"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção A</div>
+        <div class="study__title">Apex</div>
+        <div class="study__desc">O “A” de AutoGest desenhado como um ponteiro de tacômetro chegando ao pico. Geométrico, técnico, transmite precisão e performance — alinhado com a estética Stripe.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#4339c9"/><path d="M14 34 L24 14 L34 34" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#4339c9"/><path d="M14 34 L24 14 L34 34" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#4339c9"/><path d="M14 34 L24 14 L34 34" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M19 26 L29 26" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity="0.6"/><circle cx="24" cy="14" r="2" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Construção</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">grid 8 · radius 11 · stroke 3.2</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OPTION B — DIAL ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <!-- Outer ring -->
+              <circle cx="24" cy="24" r="20" stroke="#0a2540" stroke-width="2.2" fill="none"/>
+              <!-- Tachometer arc 240° in indigo -->
+              <path d="M 9.9 33.4 A 18 18 0 1 1 38.1 33.4" stroke="#635bff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+              <!-- Tick marks -->
+              <line x1="24" y1="6" x2="24" y2="9" stroke="#0a2540" stroke-width="1.6" stroke-linecap="round"/>
+              <line x1="38.5" y1="14.5" x2="36.5" y2="16.5" stroke="#0a2540" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+              <line x1="9.5" y1="14.5" x2="11.5" y2="16.5" stroke="#0a2540" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+              <!-- Needle pointing to 2 o'clock (high RPM) -->
+              <line x1="24" y1="24" x2="33" y2="17" stroke="#0a2540" stroke-width="2.6" stroke-linecap="round"/>
+              <circle cx="24" cy="24" r="2.8" fill="#0a2540"/>
+              <circle cx="24" cy="24" r="1.2" fill="#fff"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="20" stroke="#f0f2f8" stroke-width="2.2" fill="none"/>
+            <path d="M 9.9 33.4 A 18 18 0 1 1 38.1 33.4" stroke="#8b85ff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+            <line x1="24" y1="6" x2="24" y2="9" stroke="#f0f2f8" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="38.5" y1="14.5" x2="36.5" y2="16.5" stroke="#f0f2f8" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+            <line x1="9.5" y1="14.5" x2="11.5" y2="16.5" stroke="#f0f2f8" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+            <line x1="24" y1="24" x2="33" y2="17" stroke="#f0f2f8" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="24" cy="24" r="2.8" fill="#f0f2f8"/>
+            <circle cx="24" cy="24" r="1.2" fill="#0a0d1f"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção B</div>
+        <div class="study__title">Dial</div>
+        <div class="study__desc">Símbolo open-air: o velocímetro completo com ponteiro, marcações e arco indigo. Mais literal e icônico, lê instantaneamente como “oficina automotiva”. Funciona bem em outline e preenchido.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="#0a2540" stroke-width="2.2" fill="none"/><line x1="24" y1="24" x2="33" y2="17" stroke="#0a2540" stroke-width="3" stroke-linecap="round"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="#0a2540" stroke-width="2.2" fill="none"/><path d="M 9.9 33.4 A 18 18 0 1 1 38.1 33.4" stroke="#635bff" stroke-width="2.6" stroke-linecap="round" fill="none"/><line x1="24" y1="24" x2="33" y2="17" stroke="#0a2540" stroke-width="2.6" stroke-linecap="round"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="#0a2540" stroke-width="2.2" fill="none"/><path d="M 9.9 33.4 A 18 18 0 1 1 38.1 33.4" stroke="#635bff" stroke-width="2.6" stroke-linecap="round" fill="none"/><line x1="24" y1="6" x2="24" y2="9" stroke="#0a2540" stroke-width="1.6" stroke-linecap="round"/><line x1="24" y1="24" x2="33" y2="17" stroke="#0a2540" stroke-width="2.6" stroke-linecap="round"/><circle cx="24" cy="24" r="2.8" fill="#0a2540"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Construção</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">circle r20 · arc 240° · needle 60°</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OPTION C — TORQUE ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <!-- Monogram A formed by two angular bars + horizontal slot, in a wordmark-friendly geometric style -->
+              <defs>
+                <linearGradient id="gC1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0a2540"/>
+                  <stop offset="100%" stop-color="#06182f"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="44" height="44" rx="11" fill="url(#gC1)"/>
+              <!-- A built from two trapezoidal bars + indigo accent crossbar -->
+              <path d="M16 36 L22 12 L26 12 L20 36 Z" fill="#fff"/>
+              <path d="M28 36 L22 12 L26 12 L32 36 Z" fill="#fff" opacity="0.55"/>
+              <rect x="19" y="26" width="10" height="2.6" rx="1" fill="#635bff"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <rect x="2" y="2" width="44" height="44" rx="11" fill="#11152b" stroke="rgba(255,255,255,0.08)"/>
+            <path d="M16 36 L22 12 L26 12 L20 36 Z" fill="#f0f2f8"/>
+            <path d="M28 36 L22 12 L26 12 L32 36 Z" fill="#f0f2f8" opacity="0.45"/>
+            <rect x="19" y="26" width="10" height="2.6" rx="1" fill="#8b85ff"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção C</div>
+        <div class="study__title">Torque</div>
+        <div class="study__desc">Monograma “A” em estilo Shopify/Linear — dois eixos sobrepostos com a barra indigo como travessa. Sólido, corporativo, sem nenhuma referência literal — escala perfeitamente até 12px.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#0a2540"/><path d="M16 36 L22 12 L26 12 L20 36 Z" fill="#fff"/><path d="M28 36 L22 12 L26 12 L32 36 Z" fill="#fff" opacity="0.55"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#0a2540"/><path d="M16 36 L22 12 L26 12 L20 36 Z" fill="#fff"/><path d="M28 36 L22 12 L26 12 L32 36 Z" fill="#fff" opacity="0.55"/><rect x="19" y="26" width="10" height="2.6" rx="1" fill="#635bff"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><rect x="2" y="2" width="44" height="44" rx="11" fill="#0a2540"/><path d="M16 36 L22 12 L26 12 L20 36 Z" fill="#fff"/><path d="M28 36 L22 12 L26 12 L32 36 Z" fill="#fff" opacity="0.55"/><rect x="19" y="26" width="10" height="2.6" rx="1" fill="#635bff"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Construção</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">2 axes · 12° lean · accent bar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OPTION D — CIRCUIT ========== -->
+    <div class="study">
+      <div class="study__split">
+        <div class="study__hero study__hero--light">
+          <div class="lockup">
+            <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+              <!-- Hexagonal mark, automotive-engineering vibe, with "AG" suggested by two notches -->
+              <defs>
+                <linearGradient id="gD1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#7a72ff"/>
+                  <stop offset="100%" stop-color="#2a228f"/>
+                </linearGradient>
+              </defs>
+              <!-- Hex outer -->
+              <path d="M24 3 L41 13 L41 35 L24 45 L7 35 L7 13 Z" fill="url(#gD1)"/>
+              <!-- inner stroke ring for depth -->
+              <path d="M24 6.5 L38 14.7 L38 33.3 L24 41.5 L10 33.3 L10 14.7 Z" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+              <!-- A glyph carved out -->
+              <path d="M15 33 L23 14 L25 14 L33 33 L29 33 L27 28 L21 28 L19 33 Z M22 25 L26 25 L24 19 Z" fill="#fff"/>
+            </svg>
+            <div>
+              <span class="lockup__type">AutoGest</span>
+              <span class="lockup__sub">Workshop OS</span>
+            </div>
+          </div>
+        </div>
+        <div class="study__hero study__hero--dark">
+          <svg width="80" height="80" viewBox="0 0 48 48" fill="none">
+            <path d="M24 3 L41 13 L41 35 L24 45 L7 35 L7 13 Z" fill="#11152b" stroke="rgba(255,255,255,0.12)"/>
+            <path d="M24 6.5 L38 14.7 L38 33.3 L24 41.5 L10 33.3 L10 14.7 Z" fill="none" stroke="rgba(139,133,255,0.30)" stroke-width="1"/>
+            <path d="M15 33 L23 14 L25 14 L33 33 L29 33 L27 28 L21 28 L19 33 Z M22 25 L26 25 L24 19 Z" fill="#8b85ff"/>
+          </svg>
+        </div>
+      </div>
+      <div class="study__meta">
+        <div class="study__name">Opção D</div>
+        <div class="study__title">Hex</div>
+        <div class="study__desc">Hexágono — referência sutil a parafuso/porca da engenharia automotiva — com o “A” esculpido em negativo. Distintivo, fácil de virar selo de qualidade ou medalha de certificação.</div>
+      </div>
+      <div class="study__details">
+        <div>
+          <div class="study__detail-label">Escala</div>
+          <div class="scale">
+            <svg width="14" height="14" viewBox="0 0 48 48"><path d="M24 3 L41 13 L41 35 L24 45 L7 35 L7 13 Z" fill="#4339c9"/><path d="M15 33 L23 14 L25 14 L33 33 L29 33 L27 28 L21 28 L19 33 Z M22 25 L26 25 L24 19 Z" fill="#fff"/></svg>
+            <svg width="22" height="22" viewBox="0 0 48 48"><path d="M24 3 L41 13 L41 35 L24 45 L7 35 L7 13 Z" fill="#4339c9"/><path d="M15 33 L23 14 L25 14 L33 33 L29 33 L27 28 L21 28 L19 33 Z M22 25 L26 25 L24 19 Z" fill="#fff"/></svg>
+            <svg width="36" height="36" viewBox="0 0 48 48"><path d="M24 3 L41 13 L41 35 L24 45 L7 35 L7 13 Z" fill="#4339c9"/><path d="M15 33 L23 14 L25 14 L33 33 L29 33 L27 28 L21 28 L19 33 Z M22 25 L26 25 L24 19 Z" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="study__detail-label">Construção</div>
+          <div style="font-size: 12px; color: var(--soft); font-family: 'Geist Mono'">hex · A in negative · gradient</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+    <p><strong>Próximo passo:</strong> me diga a letra da opção preferida (A, B, C ou D) — ou peça ajustes de cor/forma. Eu aplico em todo o sistema: sidebar, favicon, splash, modais e documentos imprimíveis.</p>
+  </div>
+
+</div>
+</body>
+</html>
