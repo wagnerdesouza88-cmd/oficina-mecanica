@@ -2,7 +2,7 @@
 // =====================================================
 // AutoGest — Ordens de Serviço
 // =====================================================
-const { useState: useStateOrders } = React;
+const { useState: useStateOrders, useRef: useRefOrders, useEffect: useEffectOrders } = React;
 
 function OrdersScreen() {
   const D = window.MOCK_DATA;
@@ -10,6 +10,8 @@ function OrdersScreen() {
   const [q, setQ] = useStateOrders("");
   const [selectedId, setSelectedId] = useStateOrders(null);
   const [showNew, setShowNew] = useStateOrders(false);
+  const [editOrder, setEditOrder] = useStateOrders(null);
+  const [menuAnchor, setMenuAnchor] = useStateOrders(null); // { order, x, y }
 
   const counts = {
     all: D.orders.length,
@@ -43,8 +45,8 @@ function OrdersScreen() {
             <span className="input-group__icon"><Icons.Search size={14}/></span>
             <input className="input" placeholder="Buscar por OS, placa, cliente…" value={q} onChange={(e)=>setQ(e.target.value)}/>
           </div>
-          <button className="btn btn--secondary" onClick={()=>{alert("Filtros\\n\\nEm breve")}}><Icons.Filter size={14}/> Filtros</button>
-          <button className="btn btn--secondary" onClick={()=>{alert("Exportando PDF das ordens...")}}><Icons.ArrowDownRight size={14}/> Exportar</button>
+          <button className="btn btn--secondary" onClick={()=>{alert("Filtros avançados em breve!")}}><Icons.Filter size={14}/> Filtros</button>
+          <button className="btn btn--secondary" onClick={()=>{window.print();}}><Icons.ArrowDownRight size={14}/> Exportar</button>
           <button className="btn btn--primary" onClick={()=>setShowNew(true)}><Icons.Plus size={14}/> Nova Ordem</button>
         </div>
       </div>
@@ -144,9 +146,22 @@ function OrdersScreen() {
                     </td>
                     <td className="num" onClick={(e)=>e.stopPropagation()}>
                       <div className="actions">
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir" onClick={()=>{window.print();}}><Icons.Print size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Editar" onClick={()=>{alert("Editando OS #" + o.code);}}><Icons.Edit size={14}/></button>
-                        <button className="btn btn--ghost btn--icon btn--sm" title="Mais" onClick={()=>{alert("Mais opções:\\n✓ Duplicar OS\\n✓ Cancelar\\n✓ Arquivar\\n✓ Exportar PDF");}}><Icons.More size={14}/></button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Imprimir OS"
+                          onClick={(e)=>{ e.stopPropagation(); window.print(); }}>
+                          <Icons.Print size={14}/>
+                        </button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Editar OS"
+                          onClick={(e)=>{ e.stopPropagation(); setMenuAnchor(null); setEditOrder(o); }}>
+                          <Icons.Edit size={14}/>
+                        </button>
+                        <button className="btn btn--ghost btn--icon btn--sm" title="Mais opções"
+                          onClick={(e)=>{
+                            e.stopPropagation();
+                            const r = e.currentTarget.getBoundingClientRect();
+                            setMenuAnchor(menuAnchor?.order?.id===o.id ? null : { order:o, x:r.right, y:r.bottom+4 });
+                          }}>
+                          <Icons.More size={14}/>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -171,8 +186,19 @@ function OrdersScreen() {
         </div>
       </div>
 
-      {selected && <OrderDetailModal order={selected} onClose={()=>setSelectedId(null)}/>}
-      {showNew && <NewOrderModal onClose={()=>setShowNew(false)}/>}
+      {selected    && <OrderDetailModal order={selected}   onClose={()=>setSelectedId(null)}/>}
+      {showNew     && <NewOrderModal                       onClose={()=>setShowNew(false)}/>}
+      {editOrder   && <EditOrderModal   order={editOrder}  onClose={()=>setEditOrder(null)}/>}
+      {menuAnchor  && (
+        <OrderDropdown
+          order={menuAnchor.order}
+          x={menuAnchor.x}
+          y={menuAnchor.y}
+          onEdit={()=>{ setMenuAnchor(null); setEditOrder(menuAnchor.order); }}
+          onView={()=>{ setMenuAnchor(null); setSelectedId(menuAnchor.order.id); }}
+          onClose={()=>setMenuAnchor(null)}
+        />
+      )}
     </div>
   );
 }
@@ -389,6 +415,120 @@ function NewOrderModal({ onClose }) {
               </button>
             ))}
           </div>
+        </div>
+      </div>
+    </Modal>
+  );
+}
+
+/* ---------- Dropdown three-dots OS (position:fixed) ---------- */
+function OrderDropdown({ order, x, y, onEdit, onView, onClose }) {
+  const ref = useRefOrders(null);
+  useEffectOrders(() => {
+    function onClickOut(e) { if (ref.current && !ref.current.contains(e.target)) onClose(); }
+    function onKey(e)      { if (e.key === "Escape") onClose(); }
+    document.addEventListener("mousedown", onClickOut);
+    document.addEventListener("keydown",   onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClickOut);
+      document.removeEventListener("keydown",   onKey);
+    };
+  }, [onClose]);
+
+  const row = (label, icon, handler, danger) => (
+    <button onClick={()=>{ handler(); onClose(); }} style={{
+      display:"flex",alignItems:"center",gap:8,width:"100%",padding:"7px 12px",
+      background:"none",border:"none",cursor:"pointer",fontSize:13,textAlign:"left",
+      color: danger ? "var(--danger)" : "var(--text)",
+    }}
+    onMouseEnter={e=>e.currentTarget.style.background="var(--bg-hover)"}
+    onMouseLeave={e=>e.currentTarget.style.background="none"}>
+      {icon}{label}
+    </button>
+  );
+
+  return (
+    <div ref={ref} style={{
+      position:"fixed", right: window.innerWidth - x, top: y, zIndex:9999,
+      background:"var(--bg-elev)",border:"1px solid var(--border)",
+      borderRadius:8,boxShadow:"0 8px 24px rgba(0,0,0,0.22)",
+      minWidth:190,padding:"4px 0",
+    }}>
+      {row("Ver detalhes",    <Icons.Clipboard size={13}/>, onView)}
+      {row("Editar OS",       <Icons.Edit size={13}/>,      onEdit)}
+      {row("Imprimir OS",     <Icons.Print size={13}/>,     ()=>window.print())}
+      {row("Duplicar OS",     <Icons.Plus size={13}/>,      ()=>alert("OS duplicada!"))}
+      <div style={{ height:1,background:"var(--border)",margin:"4px 0" }}/>
+      {row("Cancelar OS",     <Icons.X size={13}/>,
+        ()=>{ if(confirm("Cancelar OS #"+order.code+"?")) alert("OS cancelada."); }, true)}
+    </div>
+  );
+}
+
+/* ---------- Editar OS ---------- */
+function EditOrderModal({ order, onClose }) {
+  const v = window.getVehicle(order.vehicleId);
+  const c = window.getClient(order.clientId);
+  return (
+    <Modal title={`Editar OS #${order.code}`}
+           sub={`${v.plate} · ${v.brand} ${v.model} · ${c.name}`}
+           onClose={onClose} width={680}
+           footer={<>
+             <button className="btn btn--ghost" onClick={onClose}>Cancelar</button>
+             <button className="btn btn--primary"><Icons.Check size={14}/> Salvar alterações</button>
+           </>}>
+      <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:14 }}>
+        <div className="field">
+          <label className="field__label">Cliente</label>
+          <select className="select" defaultValue={order.clientId}>
+            {window.MOCK_DATA.clients.map(cl=>(
+              <option key={cl.id} value={cl.id}>{cl.name}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label className="field__label">Veículo</label>
+          <select className="select" defaultValue={order.vehicleId}>
+            {window.MOCK_DATA.vehicles.map(vh=>(
+              <option key={vh.id} value={vh.id}>{vh.plate} · {vh.brand} {vh.model}</option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
+          <label className="field__label">Mecânico responsável</label>
+          <select className="select" defaultValue={order.mechanic}>
+            <option>Eduardo S.</option><option>Bruno A.</option><option>Carlos M.</option>
+          </select>
+        </div>
+        <div className="field">
+          <label className="field__label">Status</label>
+          <select className="select" defaultValue={order.status}>
+            <option value="open">Aberta</option>
+            <option value="in_progress">Em andamento</option>
+            <option value="waiting_part">Aguardando peça</option>
+            <option value="done">Concluída</option>
+            <option value="cancelled">Cancelada</option>
+          </select>
+        </div>
+        <div className="field">
+          <label className="field__label">Data de entrada</label>
+          <input className="input" type="text" defaultValue={order.entry}/>
+        </div>
+        <div className="field">
+          <label className="field__label">Previsão de entrega</label>
+          <input className="input" type="text" defaultValue={order.forecast}/>
+        </div>
+        <div className="field" style={{ gridColumn:"1 / -1" }}>
+          <label className="field__label">Serviços</label>
+          {order.services.map((s,i)=>(
+            <div key={i} style={{ display:"flex",gap:8,alignItems:"center",marginBottom:6 }}>
+              <input className="input" defaultValue={s} style={{ flex:1 }}/>
+            </div>
+          ))}
+        </div>
+        <div className="field">
+          <label className="field__label">Total (R$)</label>
+          <input className="input" defaultValue={window.fmtBRL(order.total)}/>
         </div>
       </div>
     </Modal>
